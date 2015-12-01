@@ -1,0 +1,9 @@
+#template {
+	margin: 5;
+	padding: 3;
+	border: 3;
+	font-size: 100%;
+	font: inherit;
+  text-align: center;
+	vertical-align: baseline;
+}
