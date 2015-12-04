@@ -2,47 +2,56 @@
 <html>
 <head>
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" type="text/css" href="style.css">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="css/nav.css">
+  <link rel="stylesheet" type="text/css" href="css/normalize.css">
 <title>
-
+A Blog For All Times
 </title>
 </head>
+
 <body>
   <header>
-    <h1>
-The Big Ipsum Blog
-    </h1>
+    <h1>The Big Ipsum Blog</h1>
+    <h2>Our intent is for all your delight</h2>
 
-  <nav>
-    <div id = "navbar">
-      <a href="Articles.html">Articles</a>
-      <a href="Contact.html">Contact(coming soon!)</a>
-      <a href="http://twitter.com/Erika_Hokanson" target =_blank>Twitter</a>
-      <a href="http://github.com/erikawho" target=_blank>Github</a>
-    </div>
-<h3>Filter Articles</h3>
-  <form id = "catFilter">
-  <select id = "category">
-      <option class = "catMenuItem" value = "none">Filter by category</option>
-  </select>
-  </form>
-  <form id = "authFilter">
-  <select id = "author">
-      <option class = "authMenuItem" value = "none">Filter by author</option>
-  </select>
-  </form>
+<nav class = "nav-menu">
+  <div>
+    <ul>
+      <li class = "ul.nav li" data-content = "About"><a href = "About.html">About</a></li>
+      <li class = "ul.nav li" data-content = "Contact"><a href = "Contact.html">Contact</a></li>
+      <li><a href= "http://twitter.com/Erika_Hokanson" target =_blank>Twitter</a></li>
+      <li><a href= "http://github.com/erikawho" target=_blank>Github</a></li>
+    </ul>
 
-</div>
+    <h3>Filter Articles</h3>
+    <form id = "categoryFilter">
+    <select id = "category">
+        <option class = "categoryMenuItem" value = "none">Choose category</option>
+    </select>
+    </form>
+    <form id = "authorFilter">
+    <select id = "author">
+        <option class = "authorMenuItem" value = "none">Choose author</option>
+    </select>
+    </form>
+    <form id = "titleFilter">
+    <select id = "title">
+        <option class = "titleMenuItem" value = "none">Choose title</option>
+    </select>
+    </form>
+  </div>
 </nav>
 </header>
 
 <main>
   <article id = "post">
-    <h1 class = "postTitle">
-    <p class = "postAuthor">
-    <p class = "postCategory">
-    <p class = "postBody">
-    <a href = "#" class = "read-on">Show/Hide</a>
+    <h1 class = "postTitle"></h1>
+    <p class = "postAuthor"></p>
+    <p class = "postCategory"></p>
+    <div class = "postBody"></div>
+    <p class = "postAge"></p>
+    <a href = "#" class = "read-on">Expand/Collapse</a>
   </article>
 </main>
 
@@ -51,8 +60,10 @@ Copyright Big Ipsum 2015.
 </footer>
 
 <script src = "https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src= "https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.js"></script>
 <script src = "js/article.js"></script>
 <script src = "js/blog.js"></script>
+<script src = "js/index.js"></script>
 <script src = "js/blogArticles.js"></script>
 
 
