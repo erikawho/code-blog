@@ -29,3 +29,16 @@ body {
  font-size: 14;
 
 }
+
+form {
+	display: inline-block;
+	align: left;
+}
+
+form input {
+	display: block;
+}
+
+form textarea {
+	align: left;
+}
