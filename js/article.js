@@ -9,15 +9,20 @@ var Article = function(props) {
 };
 
 Article.prototype.toHTML = function() {
-  var age = this.postAge(this.publishedOn);
-  var $clonedArticle = $('article#post').clone();
-  $clonedArticle.removeAttr ('id');
-  $clonedArticle.find('.postAuthor').html ('<a href = "' + this.authorURL + '>' + this.author + '</a>');
-  $clonedArticle.find('.postTitle').html(this.title);
-  $clonedArticle.find('.postBody').html(this.body);
-  $clonedArticle.find('.postAge').html(this.publishedOn);
-  $clonedArticle.find('.postCategory').html(this.category);
-  $('main').append($clonedArticle);
+  var source = $('#blogArticle').html();
+  var template = Handlebars.compile(source);
+  var html = template(this);
+  $('#app').append(html);
+
+  // var age = this.postAge(this.publishedOn);
+  // var $clonedArticle = $('article#post').clone();
+  // $clonedArticle.removeAttr ('id');
+  // $clonedArticle.find('.postAuthor').html ('<a href = "' + this.authorURL + '>' + this.author + '</a>');
+  // $clonedArticle.find('.postTitle').html(this.title);
+  // $clonedArticle.find('.postBody').html(this.body);
+  // $clonedArticle.find('.postAge').html(this.publishedOn);
+  // $clonedArticle.find('.postCategory').html(this.category);
+  // $('main').append($clonedArticle);
 };
 //Anonymous callback function
 

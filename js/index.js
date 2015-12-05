@@ -4,6 +4,7 @@
 $(document).ready(function() {
   blog.populate();
   blog.createAll();
-  $('#post').remove();
+  // $('#post').remove();
   blog.truncateArticle();
+  newArticlePreview();
 });

@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="css/nav.css">
+  <link rel="stylesheet" type="text/css" href="css/normalize.css">
+<title>
+New blog entries
+</title>
+
+</head>
+
+<body>
+<header>
+    <h1>New blog entries</h1>
+
+
+<nav class = "nav-menu">
+  <div>
+    <ul>
+      <li class = "ul.nav li" data-content = "About"><a href = "About.html">About</a></li>
+      <li class = "ul.nav li" data-content = "Contact"><a href = "Contact.html">Contact</a></li>
+      <li><a href= "http://twitter.com/Erika_Hokanson" target =_blank>Twitter</a></li>
+      <li><a href= "http://github.com/erikawho" target=_blank>Github</a></li>
+    </ul>
+
+  </div>
+</nav>
+</header>
+
+<main>
+
+  <section id="write">
+    <h1>Create new blog post</h1>
+    <form action="#" id="new-form">
+      <label>
+        <input type="text" id="article-title" placeholder="Article title" required>
+      </label>
+      <textarea id="article-body" rows="8" cols="40 required">
+      </textarea>
+      <label>
+        <input type="text" id="article-author" placeholder="Author" required>
+      </label>
+      <label>
+        <input type="text" id="article-author-url" placeholder="Author's URL" required>
+      </label>
+      <label>
+        <input type="text" id="article-category" placeholder="Article category" required>
+      </label>
+      <label>
+        <input type="checkbox" id="article-published">Published
+      </label>
+      <input type="submit">
+    </form>
+  </section>
+
+  Preview:
+  <section id="preview">
+
+      <article id="post">
+        <h1 class = "postTitle"></h1>
+        <p class = "postAuthor"></p>
+        <p class = "postCategory"></p>
+        <div class = "postBody"></div>
+        <p class = "postAge"></p>
+        <a href = "#" class = "read-on">Expand/Collapse</a>
+      </article>
+
+
+  </section>
+
+  <!-- <section id="article-export">
+    <label id="export-field" for="article-json" class="pull-right">
+      <input type="text" readonly id="article-json">
+    </label>
+  </section> -->
+
+</main>
+
+<footer>
+Copyright Big Ipsum 2015.
+</footer>
+<script src ="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.5/marked.js"></script>
+<script src = "https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src = "js/article.js"></script>
+<script src = "js/blog.js"></script>
+<script src ="js/new.js"></script>
+<script src = "js/index.js"></script>
+<script src = "js/blogArticles.js"></script>
+
+
+</body>
+</html>
