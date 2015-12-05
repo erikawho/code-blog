@@ -9,6 +9,19 @@
 A Blog For All Times
 </title>
 </head>
+<script src= "https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.js"></script>
+
+<script id="blogArticle" type="text/x-handlebars-template">
+  <article id="post">
+    <h1 class = "postTitle">{{title}}</h1>
+    <p class = "postAuthor">{{author}}</p>
+    <p class = "postCategory">{{category}}</p>
+    <div class = "postBody">{{{body}}}</div>
+    <p class = "postAge">{{publishedOn}}</p>
+    <a href = "#" class = "read-on">Expand/Collapse</a>
+  </article>
+</script>
+
 
 <body>
   <header>
@@ -45,14 +58,16 @@ A Blog For All Times
 </header>
 
 <main>
-  <article id = "post">
+  <div id="app">
+  </div>
+  <!-- <article id = "post">
     <h1 class = "postTitle"></h1>
     <p class = "postAuthor"></p>
     <p class = "postCategory"></p>
     <div class = "postBody"></div>
     <p class = "postAge"></p>
     <a href = "#" class = "read-on">Expand/Collapse</a>
-  </article>
+  </article> -->
 </main>
 
 <footer>
@@ -60,7 +75,6 @@ Copyright Big Ipsum 2015.
 </footer>
 
 <script src = "https://code.jquery.com/jquery-1.11.3.min.js"></script>
-<script src= "https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.js"></script>
 <script src = "js/article.js"></script>
 <script src = "js/blog.js"></script>
 <script src = "js/index.js"></script>
