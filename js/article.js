@@ -28,17 +28,6 @@ Article.getAll = function(callback) {
 Article.truncateTable =
 // Incomplete
 
-  // var age = this.postAge(this.publishedOn);
-  // var $clonedArticle = $('article#post').clone();
-  // $clonedArticle.removeAttr ('id');
-  // $clonedArticle.find('.postAuthor').html ('<a href = "' + this.authorURL + '>' + this.author + '</a>');
-  // $clonedArticle.find('.postTitle').html(this.title);
-  // $clonedArticle.find('.postBody').html(this.body);
-  // $clonedArticle.find('.postAge').html(this.publishedOn);
-  // $clonedArticle.find('.postCategory').html(this.category);
-  // $('main').append($clonedArticle);
-};
-//Anonymous callback function
 
 Article.prototype.categorytagsDropDown = function() {
   var $clonedMenuItem1 = $('.categoryMenuItem').clone();
