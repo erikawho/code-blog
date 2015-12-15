@@ -8,11 +8,25 @@ var Article = function(props) {
   blog.article.push(this);
 };
 
+// You're going to enter some jQuery/AJAX here
+console.log
+// For every cache hit or miss
+// Only if there's a new article, should the page GET the content
+
 Article.prototype.toHTML = function() {
   var source = $('#blogArticle').html();
   var template = Handlebars.compile(source);
   var html = template(this);
   $('#app').append(html);
+
+Article.getAll = function(callback) {
+  webDB.execute('SELECT * FROM articles ORDER BY publishedOn;',
+  callback
+  );
+};
+
+Article.truncateTable =
+// Incomplete
 
   // var age = this.postAge(this.publishedOn);
   // var $clonedArticle = $('article#post').clone();

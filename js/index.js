@@ -4,7 +4,16 @@
 $(document).ready(function() {
   blog.populate();
   blog.createAll();
-  // $('#post').remove();
   blog.truncateArticle();
   newArticlePreview();
+});
+
+$(function() {
+  // Initialize web DB
+  webDB.init();
+
+  blog.handleAuthorFilter();
+  blog.handleCategoryFilter();
+
+  blog.handleMainNav();
 });

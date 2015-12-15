@@ -20,6 +20,47 @@ blog.populate = function() {
   }
 };
 
+blog.articles = function
+
+blog.fetchFromDB = function(callback) {
+  callback = callback || function() {};
+  webDB.execute(
+    'SELECT * FROM articles ORDER BY publishedOn',
+    function (resultArray) {
+      resultArray
+    }
+ }  )
+
+blog.handleDeleteButton = function() {
+  $('delete-article-button').on('click', function() {
+    var id = $(this).data('article-id');
+    var article = blog.buildArticle();
+    article.id = id;
+    article.deleteRecord(blog.clearAndFetch)
+
+    blog.articles = [];
+    Article.truncateTable(blog.fetchJSON)
+    webDB.execute('DELETE FROM articles', blog.fetchJSON);
+  } else {
+    console.log('cache hit!');
+    blog.fetchFromDB();
+  }
+};
+
+blog.buildArticle = function() {}
+// More content here
+
+blog.loadArticleById = function(id) {
+  Article.find(id, );
+    webDB.execute(
+      [
+        {
+        'sql'
+        }
+      ]
+    )
+}
+
 blog.truncateArticle = function() {
   $('main p:not(:first-child)').hide();
   $('main').on('click', '.read-on', function(event) {

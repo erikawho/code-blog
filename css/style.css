@@ -6,12 +6,11 @@ body {
 	flex-flow: row wrap;
 	font-size: 100%;
 	font: inherit;
+	font-family: 'Lato', sans-serif;
   text-align: center;
 	vertical-align: baseline;
 	background-color: orange;
 }
-
-
 
 #category {
   padding: 1em;

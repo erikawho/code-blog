@@ -1,22 +1,23 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
+  <link rel="stylesheet" type="text/css" href="vendor/normalize.css">
   <link rel="stylesheet" type="text/css" href="css/style.css">
   <link rel="stylesheet" type="text/css" href="css/nav.css">
-  <link rel="stylesheet" type="text/css" href="css/normalize.css">
-<title>
-A Blog For All Times
-</title>
-</head>
-<script src= "https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0/handlebars.js"></script>
+<!-- CSS files in order: icons. base. layout. modules. railscasts. -->
 
+</head>
+
+<!-- // Template -->
 <script id="blogArticle" type="text/x-handlebars-template">
   <article id="post">
     <h1 class = "postTitle">{{title}}</h1>
-    <p class = "postAuthor">{{author}}</p>
+    By <a href="{{authorURL}}"><p class = "postAuthor">{{author}}</a></p>
     <p class = "postCategory">{{category}}</p>
-    <div class = "postBody">{{{body}}}</div>
+    <section class = "postBody">{{{body}}}</section>
     <p class = "postAge">{{publishedOn}}</p>
     <a href = "#" class = "read-on">Expand/Collapse</a>
   </article>
@@ -24,19 +25,25 @@ A Blog For All Times
 
 
 <body>
-  <header>
+  <header class="site-header clearfix">
+    <section class="heading-group-h1 pull-left">
     <h1>The Big Ipsum Blog</h1>
     <h2>Our intent is for all your delight</h2>
+  </section>
 
 <nav class = "nav-menu">
-  <div>
+  <div class="hamburgler"></div>
     <ul>
       <li class = "ul.nav li" data-content = "About"><a href = "About.html">About</a></li>
       <li class = "ul.nav li" data-content = "Contact"><a href = "Contact.html">Contact</a></li>
       <li><a href= "http://twitter.com/Erika_Hokanson" target =_blank>Twitter</a></li>
       <li><a href= "http://github.com/erikawho" target=_blank>Github</a></li>
     </ul>
+  </nav>
+</header>
 
+<main>
+  <section id="articles" class="tab-content">
     <h3>Filter Articles</h3>
     <form id = "categoryFilter">
     <select id = "category">
@@ -54,31 +61,29 @@ A Blog For All Times
     </select>
     </form>
   </div>
-</nav>
-</header>
+</section>
 
-<main>
   <div id="app">
   </div>
-  <!-- <article id = "post">
-    <h1 class = "postTitle"></h1>
-    <p class = "postAuthor"></p>
-    <p class = "postCategory"></p>
-    <div class = "postBody"></div>
-    <p class = "postAge"></p>
-    <a href = "#" class = "read-on">Expand/Collapse</a>
-  </article> -->
+
 </main>
 
 <footer>
 Copyright Big Ipsum 2015.
 </footer>
 
-<script src = "https://code.jquery.com/jquery-1.11.3.min.js"></script>
-<script src = "js/article.js"></script>
-<script src = "js/blog.js"></script>
-<script src = "js/index.js"></script>
-<script src = "js/blogArticles.js"></script>
+<script src ="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.4/handlebars.js"></script>
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
+<script src="vendor/js/html5sql.js"></script>
+<script src="js/util.js"></script>
+<script src="js/article.js"></script>
+<script src="js/blog.js"></script>
+<script src="js/webdb.js"></script>
+<script src="js/blogArticles.js"></script>
+<script src="js/index.js"></script>
+<script src="vendor/js/marked.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
 
 
 </body>
