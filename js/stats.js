@@ -21,17 +21,16 @@ stats.totalWordCount = function() {
   var allWords = function(art) {
     stats.markdownWordCounts.push(stats.wordCount(art.markdown).length);
   };
-    stats.allArticles.map(allWords);
-    stats.blogWordCount = stats.markdownWordCounts.reduce(getSum, 0);
-    $('main').append('<p>Number of Words in All Articles: ' + stats.blogWordCount);
+  stats.allArticles.map(allWords);
+  stats.blogWordCount = stats.markdownWordCounts.reduce(getSum, 0);
+  $('main').append('<p>Number of Words in All Articles: ' + stats.blogWordCount);
 
-stats.numberOfAuthorWords
+  stats.numberOfAuthorWords = function() {
+};
 
 
-stats.allWordLengths = function() {
-
-}
-}
+  stats.allWordLengths = function() {
+};
 
 stats.searchAuthors = function() {
   // Search through array and if author is not there, add author to the article
@@ -59,10 +58,11 @@ stats.numberOfAuthorWords = function() {
     };
     stats.allArticles.forEach(getAuthorWords);
     stats.eachAuthorWords.push(countTemp);
-});
-stats.uniqueAuthors.forEach(function(element, index, array) {
-  $('main').append('<p>Number of Words ' + element + ' has written: '</p>');
-});
+  });
+
+  stats.uniqueAuthors.forEach(function(element, index, array) {
+    $('main').append('<p>Number of Words ' + element + ' has written: </p>');
+  });
 };
 
 $(function() {

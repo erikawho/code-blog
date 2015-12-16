@@ -37,20 +37,13 @@ webDB.connect = function (database, title, size) {
 };
 
 webDB.setupTables = function () {
-  html5sql.process(
-    'TODO: Add SQL here',
-    function() {
-      // on success
-      console.log('Success setting up tables.');
-    }
+  webDB.execute(
+    [
+      'CREATE TABLE IF NOT EXISTS articles (id INTEGER PRIMARY KEY, title VARCHAR(255) NOT NULL, author VARCHAR(255) NOT NULL, authorUrl VARCHAR (255), category VARCHAR(20), publishedOn DATETIME, markdown TEXT NOT NULL);',
+      'CREATE TABLE IF NOT EXISTS authors (id INTEGER PRIMARY KEY, name VARCHAR(255) NOT NULL, url VARCHAR(255));'
+    ]
   );
 };
-
-webDB.reconnect // See class slides
-
-webDB.insertRecord = function() {
-  // More content
-}
 
 webDB.execute = function (sql, callback) {
   callback = callback || function() {}; // Callback equals callback OR a function.
@@ -61,3 +54,5 @@ webDB.execute = function (sql, callback) {
     }
   );
 };
+
+webDB.init();

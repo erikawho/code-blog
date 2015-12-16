@@ -9,4 +9,4 @@ repos.requestAll = function(callback) {
     headers: { Authorization: 'token ' }
   }).done(function(data) {
   $.getJSON('https://api.github.com/users/erikawho/repos' + '?sort=updated');
-};
+}

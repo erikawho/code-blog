@@ -4,6 +4,7 @@ articleView.index = function() {
   var _renderAll = function() {
     $articles = $('#articles');
     $articles.fadeIn().siblings().hide();
+    $('#spinner').hide();
     Article.all.forEach(function(article) {
       $articles.append(articleView.render(article));
     });
