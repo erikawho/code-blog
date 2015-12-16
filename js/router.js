@@ -1,4 +1,4 @@
-page('/', articlesController.initIndex);
+page('/', articleController.initIndex);
 page('/about', repoController.index);
 
 page.start();

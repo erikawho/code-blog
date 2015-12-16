@@ -29,7 +29,7 @@ blog.fetchFromDB = function(callback) {
     function (resultArray) {
       resultArray
     }
- }  )
+ });
 
 blog.handleDeleteButton = function() {
   $('delete-article-button').on('click', function() {
@@ -98,13 +98,3 @@ $('select[id = "title"]').change(function() {
     $('postTitle:not(:contains(' + $(this).val() + '))').hide();
   }
 });
-
-
-  //Nav tabs
-// blog.handleMainNav = function() {
-//     $('.main.-nav').on('click'. '.tab', function(e) {
-//     $('.tab-content').hide();
-//     $('#' + $(this).data('content')).fadeIn();
-//     $('main-nav' '.tab:first').trigger('click');
-// });
-// };
