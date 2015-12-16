@@ -1,0 +1,27 @@
+
+<main class="clearfix">
+
+// See class video and include code from there
+var $headline = $('<h1>Stats</h1>');
+
+function $numberOfArticles(articles) {
+  return $('<p>Number of articles: ' + )
+}
+
+function renderStats(blog) {
+  $('#stats').replaceWith($statsComponent(blog));
+}
+
+function renderError(message, xhr) {
+  $('#stats').replaceWith($statsComponent(blog));
+}
+
+// imperative shell
+
+function stats(data, message, xhr) {
+  if (xhr.status != 200) {
+    renderError(message, xhr);
+  } else {
+    renderStats(data);
+  }
+}

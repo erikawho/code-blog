@@ -1,12 +1,23 @@
-// Example from book for submit event & getting form values
-(function() {
-  var form = document.getElementById('login');
+var util = {};
 
-  addEvent(form, 'submit', function(e) { // When user submits form
-    e.preventDefault(); // Stop it from being sent
-    var elements = this.elements; // Gets all form elements
-    var username = elements.username.value;
-    var msg = 'Welcome' + username;
-    document.getElementById('main').textContent = msg;
-  });
-}());
+util.slug = function(str) {
+  return str.replace(/\W/g, '-');
+};
+
+util.today = function() {
+  return (new Date()).toISOString().slice(0,10);
+};
+
+util.getParameterByKey = function (key) {
+  //Return a value stored in a given key from browser query string.
+  var match = RegExp('[?&]' + key + '=([^&]*)').exec(window.location.search);
+  return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
+};
+
+Handlebars.registerHelper('if_admin', function (block) {
+  var admin = util.getParameterByKey('admin');
+  if (admin === 'true') {
+    return block.fn(this);
+  }
+  return block.inverse(this);
+});
