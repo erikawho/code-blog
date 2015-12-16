@@ -1,5 +1,5 @@
 var repoController = {};
 
 repoController.index = function() {
-  repos.loadAll(repoView.index);
+  repo.loadAll(repoView.index);
 };
