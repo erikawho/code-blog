@@ -1,5 +1,24 @@
-var repoController = {};
+articleController = {};
 
-articleController.index = function() {
-  article.loadAll(articleView.index);
+articleController.initIndex = function() {
+  $.ajax({
+    method: 'HEAD',
+    url: '/js/blogArticles.json',
+    success: function(data, msg, xhr) {
+      var eTag = xhr.getResponseHeader('eTag');
+      if (!localStorage.articlesEtag || localStorage.articlesEtag != eTag) {
+        console.log('Cache miss.');
+        localStorage.articlesEtag = eTag;
+        Article.allArticles = [];
+        webDB.execute(
+          'DELETE FROM articles;'
+          ,Article.requestJSON(articleView.index));
+      } else {
+        console.log('Cache hit.');
+        Article.getDB(articleView.index);
+      }
+    }
+  }).fail(function() {
+    console.log('Ajax: try again.');
+  });
 };

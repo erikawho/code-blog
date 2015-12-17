@@ -1,21 +1,28 @@
 var Article = function(props) {
+  this.id = props.id;
   this.author = props.author;
   this.authorURL = props.authorURL;
   this.category = props.category;
   this.title = props.title;
   this.body = props.body;
   this.publishedOn = props.publishedOn;
-  blog.article.push(this);
+  this.markdown = marked(props.markdown);
+  this.age = 0;
+  // blog.article.push(this);
 };
 
 // Only if there's a new article, should the page GET the content
-function Article (opts) {
-  Object.keys(opts).forEach(function(e, index, keys) {
-    this[e] = opts[e];
-  },this);
+// function Article (opts) {
+//   Object.keys(opts).forEach(function(e, index, keys) {
+//     this[e] = opts[e];
+//   },this);
+//
+//   this.body = opts.body || marked(this.markdown);
+// }
 
-  this.body = opts.body || marked(this.markdown);
-}
+Article.allArticles = [];
+Article.author = [];
+Article.category = [];
 
 Article.prototype.insertRecord = function(callback) {
   // insert article record into database
@@ -56,15 +63,16 @@ Article.prototype.deleteRecord = function(callback) {
   );
 };
 
-Article.all = [];
+// Article.all = [];
 
 Article.requestAll = function(next, callback) {
-  $.getJSON('/scripts/blogArticles.json', function (data) {
+  $.getJSON('/js/blogArticles.json', function (data) {
     data.forEach(function(item) {
       var article = new Article(item);
+      Article.allArticles.push(article);
       article.insertRecord();
     });
-    next(callback);
+    callback();
   });
 };
 
@@ -90,81 +98,81 @@ Article.loadAll = function(callback) {
   }
 };
 
-Article.find = function(id, callback) {
-  webDB.execute(
-    [
-      {
-        'sql': 'SELECT * FROM articles WHERE id = ?',
-        'data': [id]
-      }
-    ],
-    callback
-  );
-};
+// Article.find = function(id, callback) {
+//   webDB.execute(
+//     [
+//       {
+//         'sql': 'SELECT * FROM articles WHERE id = ?',
+//         'data': [id]
+//       }
+//     ],
+//     callback
+//   );
+// };
+//
+// Article.prototype.toHTML = function() {
+//   var source = $('#blogArticle').html();
+//   var template = Handlebars.compile(source);
+//   var html = template(this);
+//   $('#app').append(html);
+//
+// Article.getAll = function(callback) {
+//   webDB.execute('SELECT * FROM articles ORDER BY publishedOn;',
+//   callback
+//   );
+// };
+//
+// Article.truncateTable = function(callback) {
+//   webDB.execute('DELETE FROM articles;',
+//     callback
+//   );
+// };
 
-Article.prototype.toHTML = function() {
-  var source = $('#blogArticle').html();
-  var template = Handlebars.compile(source);
-  var html = template(this);
-  $('#app').append(html);
-
-Article.getAll = function(callback) {
-  webDB.execute('SELECT * FROM articles ORDER BY publishedOn;',
-  callback
-  );
-};
-
-Article.truncateTable = function(callback) {
-  webDB.execute('DELETE FROM articles;',
-    callback
-  );
-};
-
-Article.prototype.categorytagsDropDown = function() {
-  var $clonedMenuItem1 = $('.categoryMenuItem').clone();
-  $clonedMenuItem1.removeAttr('class');
-  $clonedMenuItem1.attr('value', this.category);
-  $clonedMenuItem1.text(this.category);
-  if ($('#categoryFilter select').find('option[value="' + this.category + '"]').length === 0) {
-    $('#categoryFilter select').append($clonedMenuItem1);
-  };
-};
-
-Article.prototype.authortagsDropDown = function() {
-  var $clonedMenuItem2 = $('.authorMenuItem').clone();
-  $clonedMenuItem2.removeAttr('class');
-  $clonedMenuItem2.attr('value', this.author);
-  $clonedMenuItem2.text(this.author);
-  if ($('#authorFilter select').find('option[value="' + this.author + '"]').length === 0) {
-    $('#authorFilter select').append($clonedMenuItem2);
-  };
-};
-
-Article.prototype.titletagsDropDown = function() {
-  var $clonedMenuItem3 = $('.titleMenuItem').clone();
-  $clonedMenuItem3.removeAttr('class');
-  $clonedMenuItem3.attr('value', this.title);
-  $clonedMenuItem3.text(this.title);
-  if ($('#titleFilter select').find('option[value="' + this.title + '"]').length === 0) {
-    $('#titleFilter select').append($clonedMenuItem3);
-  };
-};
-
-Article.prototype.postAge = function(date) {
-  var today = new Date();
-  var dd = parseInt(today.getDate());
-  var mm = parseInt(today.getMonth()+1);
-  var yyyy = parseInt(today.getFullYear());
-
-  var year = parseInt(date.slice(0,4));
-  var month = parseInt(date.slice(5,7));
-  var day = parseInt(date.slice(8,10));
-
-  var oneDay = 24*60*60*1000; //Hours*Minutes*Seconds*Milliseconds
-  var firstDate = new Date(year,month,day); //Publish date
-  var secondDate = new Date(yyyy,mm,dd); //Today
-
-  var diffDays = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay)));
-  return diffDays;
-};
-// Will result in milliseconds
+// Article.prototype.categorytagsDropDown = function() {
+//   var $clonedMenuItem1 = $('.categoryMenuItem').clone();
+//   $clonedMenuItem1.removeAttr('class');
+//   $clonedMenuItem1.attr('value', this.category);
+//   $clonedMenuItem1.text(this.category);
+//   if ($('#categoryFilter select').find('option[value="' + this.category + '"]').length === 0) {
+//     $('#categoryFilter select').append($clonedMenuItem1);
+//   };
+// };
+//
+// Article.prototype.authortagsDropDown = function() {
+//   var $clonedMenuItem2 = $('.authorMenuItem').clone();
+//   $clonedMenuItem2.removeAttr('class');
+//   $clonedMenuItem2.attr('value', this.author);
+//   $clonedMenuItem2.text(this.author);
+//   if ($('#authorFilter select').find('option[value="' + this.author + '"]').length === 0) {
+//     $('#authorFilter select').append($clonedMenuItem2);
+//   };
+// };
+//
+// Article.prototype.titletagsDropDown = function() {
+//   var $clonedMenuItem3 = $('.titleMenuItem').clone();
+//   $clonedMenuItem3.removeAttr('class');
+//   $clonedMenuItem3.attr('value', this.title);
+//   $clonedMenuItem3.text(this.title);
+//   if ($('#titleFilter select').find('option[value="' + this.title + '"]').length === 0) {
+//     $('#titleFilter select').append($clonedMenuItem3);
+//   };
+// };
+//
+// Article.prototype.postAge = function(date) {
+//   var today = new Date();
+//   var dd = parseInt(today.getDate());
+//   var mm = parseInt(today.getMonth()+1);
+//   var yyyy = parseInt(today.getFullYear());
+//
+//   var year = parseInt(date.slice(0,4));
+//   var month = parseInt(date.slice(5,7));
+//   var day = parseInt(date.slice(8,10));
+//
+//   var oneDay = 24*60*60*1000; //Hours*Minutes*Seconds*Milliseconds
+//   var firstDate = new Date(year,month,day); //Publish date
+//   var secondDate = new Date(yyyy,mm,dd); //Today
+//
+//   var diffDays = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay)));
+//   return diffDays;
+// };
+// // Will result in milliseconds

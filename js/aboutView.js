@@ -1,14 +1,16 @@
 var aboutView = {};
 
 aboutView.index = function() {
+  $('#authorCategory').prop('selectedIndex', 0);
+  $('#filterCategory').prop('selectedIndex', 0);
   $('#repos').empty();
   $('#articles').hide();
   $('#about').show();
 
   if (aboutView.template) {
-    aboutView.filter(abotuView.renderRepos);
+    aboutView.filter(aboutView.renderRepos);
   } else {
-    $.get('/templates/repo.html', function(data, msg, xhr) {
+    $.get('/html/repo.html', function(data, msg, xhr) {
       aboutView.template = Handlebars.compile(data);
       aboutView.filter(aboutView.renderRepos);
     });
@@ -34,4 +36,14 @@ aboutView.toHTML = function(repo) {
   repo.created_at = repo.created_at.slice(0, 10);
   repo.updated_at = repo.updated_at.slice(0, 10);
   return aboutView.template(repo);
+};
+
+aboutView.showRepoDetails = function() {
+  $('.repotemplate').on('click', function() {
+    $(this).children().toggle();
+  });
+};
+
+aboutView.ui = function() {
+  this.showRepoDetails();
 };
