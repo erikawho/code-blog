@@ -1,10 +1,10 @@
 var aboutView = {};
 
 aboutView.index = function() {
-  $('#authorCategory').prop('selectedIndex', 0);
-  $('#filterCategory').prop('selectedIndex', 0);
+  $('#author').prop('selectedIndex', 0);
+  $('#title').prop('selectedIndex', 0);
   $('#repos').empty();
-  $('#articles').hide();
+  $('#article').hide();
   $('#about').show();
 
   if (aboutView.template) {
@@ -17,7 +17,7 @@ aboutView.index = function() {
   }
 };
 
-aboutView.renderRepos = function(repos) {
+aboutView.renderRepos = function(repo) {
   repos.forEach(function(e) { // e represents the objects
     $('#repos').append(aboutView.toHTML(e));
   });

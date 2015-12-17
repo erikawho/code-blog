@@ -1,24 +1,21 @@
 articleController = {};
 
-articleController.initIndex = function() {
-  $.ajax({
-    method: 'HEAD',
-    url: '/js/blogArticles.json',
-    success: function(data, msg, xhr) {
-      var eTag = xhr.getResponseHeader('eTag');
-      if (!localStorage.articlesEtag || localStorage.articlesEtag != eTag) {
-        console.log('Cache miss.');
-        localStorage.articlesEtag = eTag;
-        Article.allArticles = [];
-        webDB.execute(
-          'DELETE FROM articles;'
-          ,Article.requestJSON(articleView.index));
-      } else {
-        console.log('Cache hit.');
-        Article.getDB(articleView.index);
-      }
-    }
-  }).fail(function() {
-    console.log('Ajax: try again.');
-  });
+articlesController.index = function() {
+  Article.loadAll(articleView.index);
+};
+
+articlesController.category = function(ctx, next) {
+  var categoryData = function(data) {
+    ctx.articles = data;
+    next();
+  };
+  Article.findByCategory(ctx.params.category, categoryData );
+};
+
+articlesController.author = function(ctx, next) {
+  console.log(ctx);
+};
+
+articlesController.show = function(ctx, next) {
+  articleView.show(ctx.articles);
 };

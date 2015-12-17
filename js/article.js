@@ -1,95 +1,103 @@
-var Article = function(props) {
-  this.id = props.id;
-  this.author = props.author;
-  this.authorURL = props.authorURL;
-  this.category = props.category;
-  this.title = props.title;
-  this.body = props.body;
-  this.publishedOn = props.publishedOn;
-  this.markdown = marked(props.markdown);
-  this.age = 0;
-  // blog.article.push(this);
+var Article = function(rawData) {
+  Object.keys(rawData).forEach(function(el, index, array) {
+    this[el] = rawData[el];
+  }, this);
+
+  this.published = Date.parse(raw.publishedOn);
+  this.msDiff = Date.parse(new Date()) - this.published;
 };
 
-// Only if there's a new article, should the page GET the content
-// function Article (opts) {
-//   Object.keys(opts).forEach(function(e, index, keys) {
-//     this[e] = opts[e];
-//   },this);
-//
-//   this.body = opts.body || marked(this.markdown);
-// }
+/* ==================== PROTOTYPE==================== */
 
-Article.allArticles = [];
-Article.author = [];
-Article.category = [];
-
-Article.prototype.insertRecord = function(callback) {
-  // insert article record into database
-  webDB.execute(
-    [
-      {
-        'sql': 'INSERT INTO articles (title, author, authorUrl, category, publishedOn, markdown) VALUES (?, ?, ?, ?, ?, ?);',
-        'data': [this.title, this.author, this.authorUrl, this.category, this.publishedOn, this.markdown],
-      }
-    ],
-    callback
-  );
+// calculate and determine the string for displaying relative timestamp
+Article.prototype.daysPub = function() {
+  var dayDiff = Math.round(this.msDiff / 8.64e7);
+  // future posts
+  if (dayDiff < 0) {
+    if (dayDiff === -1) { return ', scheduled to publish tomorrow'; }
+    else { return ', scheduled to publish ' + dayDiff * -1 + ' days later'; }
+  // posts published within the month: identify by days
+  } else if (dayDiff < 30) {
+    if (dayDiff === 0) { return ', published today'; }
+    else if (dayDiff === 1) { return ', published yesterday'; }
+    else { return ', published ' + dayDiff + ' days ago'; }
+  // posts published within the year: identify by months
+  } else if (dayDiff < 365) {
+    var monthDiff = Math.round(dayDiff / 30);
+    if (monthDiff === 1) { return ', published about a month ago'; }
+    else { return ', published about ' + monthDiff + ' months ago'; }
+  // posts older than 1 year: identify by year
+  } else {
+    var yearDiff = Math.round(dayDiff / 30 / 12);
+    if (yearDiff === 1) { return ', published about a year ago'; }
+    else { return ', published about ' + yearDiff + ' years ago'; }
+  }
 };
 
-Article.prototype.updateRecord = function(callback) {
-  //update article record in databse
+// return a string of compiled HTML to be appended
+Article.prototype.toHTML = function() {
+  if (this.msDiff >= 0 || util.getQuery('admin') || $(location).attr('pathname') === '/html/editor.html') {
+    this.body = marked(this.markdown);
+    return this.template(this);
+  }
+};
+
+Article.prototype.insertRecord = function() {
   webDB.execute(
-    [
-      {
-        'sql': 'UPDATE articles SET title = ?, author = ?, authorUrl = ?, category = ?, publishedOn = ?, markdown = ? WHERE id = ?;',
-        'data': [this.title, this.author, this.authorUrl, this.category, this.publishedOn, this.markdown, this.id]
-      }
-    ],
-    callback
+    [{
+      'sql': 'INSERT INTO articles (title, author, authorUrl, category, publishedOn, markdown) VALUES (?, ?, ?, ?, ?, ?);',
+      'data': [this.title, this.author, this.authorUrl, this.category, this.publishedOn, this.markdown]
+    }]
   );
 };
 
 Article.prototype.deleteRecord = function(callback) {
-  // Delete article record in database
-  webDB.execute(
-    [
-      {
-        'sql': 'DELETE FROM articles WHERE id = ?;',
-        'data': [this.id]
-      }
-    ],
+  callback = callback || function() {};
+  webDB.execute([{
+    'sql': 'DELETE FROM articles WHERE id = ?',
+    'data': [this.id]
+  }],
     callback
   );
 };
 
-// Article.all = [];
+Article.prototype.updateRecord = function(edits, callback) {
+  callback = callback || function() {};
+  webDB.execute([{
+    'sql': 'UPDATE articles SET title = ?, author = ?, authorUrl = ?, publishedOn = ?, markdown = ?, category = ? WHERE id = ?',
+    'data': [edits.title, edits.author, edits.authorUrl, edits.publishedOn, edits.markdown, edits.category, this.id]
+  }],
+    callback
+  );
+};
 
-Article.requestAll = function(next, callback) {
-  $.getJSON('/js/blogArticles.json', function (data) {
-    data.forEach(function(item) {
-      var article = new Article(item);
-      Article.allArticles.push(article);
-      article.insertRecord();
+/* ==================== IMPORT BLOG ARTICLE DATA ==================== */
+
+Article.all = [];
+Article.importUrl = '/js/blogArticles.json';
+
+Article.importAll = function(callback, callback2) {
+  $.getJSON(Article.importUrl, function(data) {
+    data.forEach(function(el) {
+      (new Article(el)).insertRecord();
     });
-    callback();
+    callback(callback2);
   });
 };
 
+// load all data from DB
 Article.loadAll = function(callback) {
-  var callback = callback || function() {};
-
-  if (Article.all.length === 0) {
-    webDB.execute('SELECT * FROM articles ORDER BY publishedOn;',
-      function(rows) {
-        if (rows.length === 0) {
-          // Request data from server, then try loading from db again:
-          Article.requestAll(Article.loadAll, callback);
+  callback = callback || function() {};
+  console.log('loadAll');
+  if (!Article.all.length) {
+    webDB.execute(
+      'SELECT * FROM articles ORDER BY publishedOn DESC;',
+      function(data) {
+        if (!data.length) {
+          Article.importAll(Article.loadAll, callback);
         } else {
-          rows.forEach(function(row) {
-            Article.all.push(new Article(row));
-          });
-          callback();
+          // check etag: make sure the stored data is most updated
+          Article.checkETag(data, callback);
         }
       }
     );
@@ -98,81 +106,96 @@ Article.loadAll = function(callback) {
   }
 };
 
-// Article.find = function(id, callback) {
-//   webDB.execute(
-//     [
-//       {
-//         'sql': 'SELECT * FROM articles WHERE id = ?',
-//         'data': [id]
-//       }
-//     ],
-//     callback
-//   );
-// };
-//
-// Article.prototype.toHTML = function() {
-//   var source = $('#blogArticle').html();
-//   var template = Handlebars.compile(source);
-//   var html = template(this);
-//   $('#app').append(html);
-//
-// Article.getAll = function(callback) {
-//   webDB.execute('SELECT * FROM articles ORDER BY publishedOn;',
-//   callback
-//   );
-// };
-//
-// Article.truncateTable = function(callback) {
-//   webDB.execute('DELETE FROM articles;',
-//     callback
-//   );
-// };
+Article.checkETag = function(data, callback) {
+  $.ajax({
+    type: 'HEAD',
+    url: Article.importUrl,
+    success: function(result, msg, xhr) {
+      var eTagCache = localStorage.getItem('etag');
+      var eTagRemote = xhr.getResponseHeader('etag');
+      console.log('eTag from cache: ' + eTagCache);
+      console.log('eTag from server: ' + eTagRemote);
 
-// Article.prototype.categorytagsDropDown = function() {
-//   var $clonedMenuItem1 = $('.categoryMenuItem').clone();
-//   $clonedMenuItem1.removeAttr('class');
-//   $clonedMenuItem1.attr('value', this.category);
-//   $clonedMenuItem1.text(this.category);
-//   if ($('#categoryFilter select').find('option[value="' + this.category + '"]').length === 0) {
-//     $('#categoryFilter select').append($clonedMenuItem1);
-//   };
-// };
-//
-// Article.prototype.authortagsDropDown = function() {
-//   var $clonedMenuItem2 = $('.authorMenuItem').clone();
-//   $clonedMenuItem2.removeAttr('class');
-//   $clonedMenuItem2.attr('value', this.author);
-//   $clonedMenuItem2.text(this.author);
-//   if ($('#authorFilter select').find('option[value="' + this.author + '"]').length === 0) {
-//     $('#authorFilter select').append($clonedMenuItem2);
-//   };
-// };
-//
-// Article.prototype.titletagsDropDown = function() {
-//   var $clonedMenuItem3 = $('.titleMenuItem').clone();
-//   $clonedMenuItem3.removeAttr('class');
-//   $clonedMenuItem3.attr('value', this.title);
-//   $clonedMenuItem3.text(this.title);
-//   if ($('#titleFilter select').find('option[value="' + this.title + '"]').length === 0) {
-//     $('#titleFilter select').append($clonedMenuItem3);
-//   };
-// };
-//
-// Article.prototype.postAge = function(date) {
-//   var today = new Date();
-//   var dd = parseInt(today.getDate());
-//   var mm = parseInt(today.getMonth()+1);
-//   var yyyy = parseInt(today.getFullYear());
-//
-//   var year = parseInt(date.slice(0,4));
-//   var month = parseInt(date.slice(5,7));
-//   var day = parseInt(date.slice(8,10));
-//
-//   var oneDay = 24*60*60*1000; //Hours*Minutes*Seconds*Milliseconds
-//   var firstDate = new Date(year,month,day); //Publish date
-//   var secondDate = new Date(yyyy,mm,dd); //Today
-//
-//   var diffDays = Math.round(Math.abs((firstDate.getTime() - secondDate.getTime())/(oneDay)));
-//   return diffDays;
-// };
-// // Will result in milliseconds
+      if (eTagCache === eTagRemote) {
+        // etag matches
+        console.log('Cache hit!');
+        data.forEach(function(el) {
+          Article.all.push(new Article(el));
+        });
+        callback();
+      } else {
+        // etag mismatch
+        Article.truncateTable(function() {
+          console.log('Cache miss');
+          localStorage.setItem('etag', eTagRemote);
+          Article.importAll(Article.loadAll, callback);
+        });
+      }
+    }
+  });
+};
+
+// delete all records from given table
+Article.truncateTable = function(callback) {
+  callback = callback || function() {};
+  webDB.execute('DELETE FROM articles;', callback);
+};
+
+/* ==================== DROPDOWN FILTERS ==================== */
+
+// instantiate SQL search result of an array of plain objects into article objects
+Article.convertResult = function(array) {
+  return array.map(function(obj) {
+    return new Article(obj);
+  });
+};
+
+// these find methods each allows a callback function to work with the returned results, which are being passed through an array of article objects
+Article.findByTitle = function(title, callback) {
+  callback = callback || function() {};
+  webDB.execute([{
+    'sql': 'SELECT * FROM articles WHERE title = ?;',
+    'data': [title]
+  }], function(data) {
+    var articleArray = Article.convertResult(data);
+    callback(articleArray);
+  });
+};
+
+Article.findByAuthor = function(author, callback) {
+  callback = callback || function() {};
+  webDB.execute([{
+    'sql': 'SELECT * FROM articles WHERE author LIKE ? ORDER BY publishedOn DESC;',
+    'data': [author]
+  }], function(data) {
+    var articleArray = Article.convertResult(data);
+    callback(articleArray);
+  });
+};
+
+Article.findByCategory = function(cat, callback) {
+  callback = callback || function() {};
+  webDB.execute([{
+    'sql': 'SELECT * FROM articles WHERE category LIKE ? ORDER BY publishedOn DESC;',
+    'data': [cat]
+  }], function(data) {
+    var articleArray = Article.convertResult(data);
+    callback(articleArray);
+  });
+};
+
+/* ==================== DROPDOWN FILTER SPECIAL ==================== */
+Article.uniqueAuthor = function(callback) {
+  callback = callback || function() {};
+  webDB.execute('SELECT DISTINCT author FROM articles ORDER BY author;', callback);
+};
+
+Article.uniqueCategory = function(callback) {
+  callback = callback || function() {};
+  webDB.execute('SELECT DISTINCT category FROM articles ORDER BY category;', callback);
+};
+
+Article.uniqueTitle = function(callback) {
+  callback = callback || function() {};
+  webDB.execute('SELECT DISTINCT author FROM articles ORDER BY title;', callback);
+};
