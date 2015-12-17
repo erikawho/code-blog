@@ -4,11 +4,12 @@ repos.all = [];
 
 repos.requestAll = function(callback) {
   $.ajax({
+    url: '/github/users/erikawho/repos' +
+          '?per_page=100' +
+          '?sort=updated',
     type: 'GET',
-    url: 'https://api.github.com/users/erikawho/repos' + '?sort=updated',
-    headers: {Authorization: 'token ' + token}
-  }).done(function(data) {
-    repos.all = data;
+    success: function(data, message, xhr) {
+      repos.all = data;
+    }
   }).done(callback);
-  // $.getJSON('https://api.github.com/users/erikawho/repos' + '?sort=updated');
 };
