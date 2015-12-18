@@ -9,13 +9,25 @@ articleController.category = function(ctx, next) {
     ctx.articles = data;
     next();
   };
-  Article.findByCategory(ctx.params.category, categoryData );
+  Article.findByCategory(ctx.params.category, categoryData);
 };
 
 articleController.author = function(ctx, next) {
-  console.log(ctx);
+  var authorData = function(data) {
+    ctx.articles = data;
+    next();
+  };
+  Article.findByAuthor(ctx.params.category, categoryData );
 };
 
-articleController.show = function(ctx, next) {
+articleController.title = function(ctx, next) {
+  var titleData = function(data) {
+    ctx.articles = data;
+    next();
+  };
+  Article.findByTitle(ctx.params.category, categoryData);
+};
+
+articleController.show = function(ctx) {
   articleView.show(ctx.articles);
 };

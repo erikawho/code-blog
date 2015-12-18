@@ -92,14 +92,53 @@ Article.find = function(id, callback) {
 };
 
 Article.findByCategory = function(category, callback) {
-  webDB.execute(
+  webDB.execute(    // Gets the array and passes it to the callback
     [
       {
         'sql': 'SELECT * FROM articles WHERE category = ?',
         'data': [category]
       }
     ],
-    callback
+    function(rows) {
+      var articles = rows.map(function(row) {
+        return new Article(row);
+      });
+      callback(articles);
+    }
+  );
+};
+
+Article.findByAuthor = function(category, callback) {
+  webDB.execute(
+    [
+      {
+        'sql': 'SELECT * FROM articles WHERE category = ?',
+        'data': [author]
+      }
+    ],
+    function(rows) {
+      var articles = rows.map(function(row) {
+        return new Article(row);
+      });
+      callback(articles);
+    }
+  );
+};
+
+Article.findByTitle = function(category, callback) {
+  webDB.execute(
+    [
+      {
+        'sql': 'SELECT * FROM articles WHERE category = ?',
+        'data': [title]
+      }
+    ],
+    function(rows) {
+      var articles = rows.map(function(row) {
+        return new Article(row);
+      });
+      callback(articles);
+    }
   );
 };
 
