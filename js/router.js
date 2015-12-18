@@ -4,11 +4,7 @@ page('/category/:category',
     articleController.show
 );
 
-page('title/:title', articleController.title);
-articleController.title,
-articleController.show;
-
-page('author/:author', articleController.author);
+page('/author/:author', articleController.author);
 page('/html/about', repoController.index);
 
 page.start();

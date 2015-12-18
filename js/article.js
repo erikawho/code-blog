@@ -1,103 +1,76 @@
-var Article = function(rawData) {
-  Object.keys(rawData).forEach(function(el, index, array) {
-    this[el] = rawData[el];
-  }, this);
+function Article (opts) {
+  Object.keys(opts).forEach(function(e, index, keys) {
+    this[e] = opts[e];
+  },this);
 
-  this.published = Date.parse(raw.publishedOn);
-  this.msDiff = Date.parse(new Date()) - this.published;
-};
+  this.body = opts.body || marked(this.markdown);
+}
 
-/* ==================== PROTOTYPE==================== */
-
-// calculate and determine the string for displaying relative timestamp
-Article.prototype.daysPub = function() {
-  var dayDiff = Math.round(this.msDiff / 8.64e7);
-  // future posts
-  if (dayDiff < 0) {
-    if (dayDiff === -1) { return ', scheduled to publish tomorrow'; }
-    else { return ', scheduled to publish ' + dayDiff * -1 + ' days later'; }
-  // posts published within the month: identify by days
-  } else if (dayDiff < 30) {
-    if (dayDiff === 0) { return ', published today'; }
-    else if (dayDiff === 1) { return ', published yesterday'; }
-    else { return ', published ' + dayDiff + ' days ago'; }
-  // posts published within the year: identify by months
-  } else if (dayDiff < 365) {
-    var monthDiff = Math.round(dayDiff / 30);
-    if (monthDiff === 1) { return ', published about a month ago'; }
-    else { return ', published about ' + monthDiff + ' months ago'; }
-  // posts older than 1 year: identify by year
-  } else {
-    var yearDiff = Math.round(dayDiff / 30 / 12);
-    if (yearDiff === 1) { return ', published about a year ago'; }
-    else { return ', published about ' + yearDiff + ' years ago'; }
-  }
-};
-
-// return a string of compiled HTML to be appended
-Article.prototype.toHTML = function() {
-  if (this.msDiff >= 0 || util.getQuery('admin') || $(location).attr('pathname') === '/html/editor.html') {
-    this.body = marked(this.markdown);
-    return this.template(this);
-  }
-};
-
-Article.prototype.insertRecord = function() {
+Article.prototype.insertRecord = function(callback) {
+  // insert article record into database
   webDB.execute(
-    [{
-      'sql': 'INSERT INTO articles (title, author, authorUrl, category, publishedOn, markdown) VALUES (?, ?, ?, ?, ?, ?);',
-      'data': [this.title, this.author, this.authorUrl, this.category, this.publishedOn, this.markdown]
-    }]
+    [
+      {
+        'sql': 'INSERT INTO articles (title, author, authorUrl, category, publishedOn, markdown) VALUES (?, ?, ?, ?, ?, ?);',
+        'data': [this.title, this.author, this.authorUrl, this.category, this.publishedOn, this.markdown],
+      }
+    ],
+    callback
+  );
+};
+
+Article.prototype.updateRecord = function(callback) {
+  //update article record in databse
+  webDB.execute(
+    [
+      {
+        'sql': 'UPDATE articles SET title = ?, author = ?, authorUrl = ?, category = ?, publishedOn = ?, markdown = ? WHERE id = ?;',
+        'data': [this.title, this.author, this.authorUrl, this.category, this.publishedOn, this.markdown, this.id]
+      }
+    ],
+    callback
   );
 };
 
 Article.prototype.deleteRecord = function(callback) {
-  callback = callback || function() {};
-  webDB.execute([{
-    'sql': 'DELETE FROM articles WHERE id = ?',
-    'data': [this.id]
-  }],
+  // Delete article record in database
+  webDB.execute(
+    [
+      {
+        'sql': 'DELETE FROM articles WHERE id = ?;',
+        'data': [this.id]
+      }
+    ],
     callback
   );
 };
-
-Article.prototype.updateRecord = function(edits, callback) {
-  callback = callback || function() {};
-  webDB.execute([{
-    'sql': 'UPDATE articles SET title = ?, author = ?, authorUrl = ?, publishedOn = ?, markdown = ?, category = ? WHERE id = ?',
-    'data': [edits.title, edits.author, edits.authorUrl, edits.publishedOn, edits.markdown, edits.category, this.id]
-  }],
-    callback
-  );
-};
-
-/* ==================== IMPORT BLOG ARTICLE DATA ==================== */
 
 Article.all = [];
-Article.importUrl = '/js/blogArticles.json';
 
-Article.importAll = function(callback, callback2) {
-  $.getJSON(Article.importUrl, function(data) {
-    data.forEach(function(el) {
-      (new Article(el)).insertRecord();
+Article.requestAll = function(next, callback) {
+  $.getJSON('/scripts/blogArticles.json', function (data) {
+    data.forEach(function(item) {
+      var article = new Article(item);
+      article.insertRecord();
     });
-    callback(callback2);
+    next(callback);
   });
 };
 
-// load all data from DB
 Article.loadAll = function(callback) {
-  callback = callback || function() {};
-  console.log('loadAll');
-  if (!Article.all.length) {
-    webDB.execute(
-      'SELECT * FROM articles ORDER BY publishedOn DESC;',
-      function(data) {
-        if (!data.length) {
-          Article.importAll(Article.loadAll, callback);
+  var callback = callback || function() {};
+
+  if (Article.all.length === 0) {
+    webDB.execute('SELECT * FROM articles ORDER BY publishedOn;',
+      function(rows) {
+        if (rows.length === 0) {
+          // Request data from server, then try loading from db again:
+          Article.requestAll(Article.loadAll, callback);
         } else {
-          // check etag: make sure the stored data is most updated
-          Article.checkETag(data, callback);
+          rows.forEach(function(row) {
+            Article.all.push(new Article(row));
+          });
+          callback();
         }
       }
     );
@@ -106,96 +79,33 @@ Article.loadAll = function(callback) {
   }
 };
 
-Article.checkETag = function(data, callback) {
-  $.ajax({
-    type: 'HEAD',
-    url: Article.importUrl,
-    success: function(result, msg, xhr) {
-      var eTagCache = localStorage.getItem('etag');
-      var eTagRemote = xhr.getResponseHeader('etag');
-      console.log('eTag from cache: ' + eTagCache);
-      console.log('eTag from server: ' + eTagRemote);
-
-      if (eTagCache === eTagRemote) {
-        // etag matches
-        console.log('Cache hit!');
-        data.forEach(function(el) {
-          Article.all.push(new Article(el));
-        });
-        callback();
-      } else {
-        // etag mismatch
-        Article.truncateTable(function() {
-          console.log('Cache miss');
-          localStorage.setItem('etag', eTagRemote);
-          Article.importAll(Article.loadAll, callback);
-        });
+Article.find = function(id, callback) {
+  webDB.execute(
+    [
+      {
+        'sql': 'SELECT * FROM articles WHERE id = ?',
+        'data': [id]
       }
-    }
-  });
+    ],
+    callback
+  );
 };
 
-// delete all records from given table
+Article.findByCategory = function(category, callback) {
+  webDB.execute(
+    [
+      {
+        'sql': 'SELECT * FROM articles WHERE category = ?',
+        'data': [category]
+      }
+    ],
+    callback
+  );
+};
+
 Article.truncateTable = function(callback) {
-  callback = callback || function() {};
-  webDB.execute('DELETE FROM articles;', callback);
-};
-
-/* ==================== DROPDOWN FILTERS ==================== */
-
-// instantiate SQL search result of an array of plain objects into article objects
-Article.convertResult = function(array) {
-  return array.map(function(obj) {
-    return new Article(obj);
-  });
-};
-
-// these find methods each allows a callback function to work with the returned results, which are being passed through an array of article objects
-Article.findByTitle = function(title, callback) {
-  callback = callback || function() {};
-  webDB.execute([{
-    'sql': 'SELECT * FROM articles WHERE title = ?;',
-    'data': [title]
-  }], function(data) {
-    var articleArray = Article.convertResult(data);
-    callback(articleArray);
-  });
-};
-
-Article.findByAuthor = function(author, callback) {
-  callback = callback || function() {};
-  webDB.execute([{
-    'sql': 'SELECT * FROM articles WHERE author LIKE ? ORDER BY publishedOn DESC;',
-    'data': [author]
-  }], function(data) {
-    var articleArray = Article.convertResult(data);
-    callback(articleArray);
-  });
-};
-
-Article.findByCategory = function(cat, callback) {
-  callback = callback || function() {};
-  webDB.execute([{
-    'sql': 'SELECT * FROM articles WHERE category LIKE ? ORDER BY publishedOn DESC;',
-    'data': [cat]
-  }], function(data) {
-    var articleArray = Article.convertResult(data);
-    callback(articleArray);
-  });
-};
-
-/* ==================== DROPDOWN FILTER SPECIAL ==================== */
-Article.uniqueAuthor = function(callback) {
-  callback = callback || function() {};
-  webDB.execute('SELECT DISTINCT author FROM articles ORDER BY author;', callback);
-};
-
-Article.uniqueCategory = function(callback) {
-  callback = callback || function() {};
-  webDB.execute('SELECT DISTINCT category FROM articles ORDER BY category;', callback);
-};
-
-Article.uniqueTitle = function(callback) {
-  callback = callback || function() {};
-  webDB.execute('SELECT DISTINCT author FROM articles ORDER BY title;', callback);
+  // Delete all records from given table.
+  webDB.execute('DELETE FROM articles;',
+    callback
+  );
 };
