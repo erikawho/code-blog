@@ -66,15 +66,13 @@ stats.numberOfAuthorWords = function() {
 };
 
 $(function() {
-  $.get('util/articles.json', stats.getAllArticles)
-  .done(stats.numOfArticles)
-  .done(stats.searchAuthors)
-  .done(stats.numOfAuthors)
-  .done(stats.totalWordCount)
-  .done(stats.allWordLengths)
-  .done(stats.numberOfAuthorWords)
-
-  ;
+  $.getJSON('/js/blogArticles.json', stats.getAllArticles)
+  .done(stats.numOfArticles);
+  .done(stats.searchAuthors);
+  .done(stats.numOfAuthors);
+  .done(stats.totalWordCount);
+  .done(stats.allWordLengths);
+  .done(stats.numberOfAuthorWords);
 });
 
 stats.wordCount = function(str) {

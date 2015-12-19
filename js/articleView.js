@@ -1,28 +1,28 @@
 var articleView = {};
 
 // articleTemplate -> renderGroup -> render (one)
-articleView.loadTemplate = function(article) {
+articleView.loadTemplate = function(articles) {
   $.get('/html/handlebars.html', function(data, msg, xhr) {
     articleView.template = Handlebars.compile(data);
     articleView.authorPopulate();
     articleView.categoryPopulate();
     articleView.titlePopulate();
     articleView.handleFilter();
-    articleView.renderGroup(article);
+    articleView.renderGroup(articles);
     articleView.truncateArticle();
   });
 };
 
-articleView.renderGroup = function(articleList) {
+articleView.renderGroup = function(articlesList) {
   $('#article') // HTML element 'article' ID in index.html
     .hide()
     .empty()
     .append(
-      articleList.map(function(a) {
+      articlesList.map(function(a) {
         return articleView.render(a);
       })
     )
-    .siblings().hide();
+    // .siblings().hide();
 };
 
 articleView.index = function() {
@@ -83,7 +83,7 @@ articleView.titlePopulate = function() {
   _.uniq(Article.all, function(article) {
     return article.title;
   }).map(function(article) {
-    var $popCategory = $('#title-filter').clone();
+    var $popTitle = $('#title-filter').clone();
     $popTitle.removeAttr('id').text(article.title);
     $('#title').append($popTitle);
   });
@@ -91,15 +91,15 @@ articleView.titlePopulate = function() {
 
 // -------------HANDLE THE FILTERS---------------------
 articleView.handleFilter = function() {
-  $('#category').on('change', (function() {
+  $('#category').change(function() {
     page('/category/' + $(this).val());
-});
+  });
 
-  $('#author').on('change', (function() {
-    page('/author/' + $(this).val();
-});
+  $('#author').change(function() {
+    page('/author/' + $(this).val());
+  });
 
-  $('#title').on('change', (function() {
-    page('/title/' + $(this).val();
+  $('#title').change(function() {
+    page('/title/' + $(this).val());
   });
 };

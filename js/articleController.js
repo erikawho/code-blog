@@ -5,24 +5,26 @@ articleController.index = function() {
 };
 
 articleController.category = function(ctx, next) {
-  var categoryData = function(data) {
-    ctx.articles = data;
-    next();
-  };
-  Article.findByCategory(ctx.params.category, categoryData);
+  Article.loadAll(function() {
+    var categoryData = function(articles) {
+      ctx.articles = articles;
+      next();
+    };
+    Article.findByCategory(ctx.params.category, categoryData);
+  });
 };
 
 articleController.author = function(ctx, next) {
-  var authorData = function(data) {
-    ctx.articles = data;
+  var authorData = function(articles) {
+    ctx.articles = articles;
     next();
   };
   Article.findByAuthor(ctx.params.category, categoryData );
 };
 
 articleController.title = function(ctx, next) {
-  var titleData = function(data) {
-    ctx.articles = data;
+  var titleData = function(articles) {
+    ctx.articles = articles;
     next();
   };
   Article.findByTitle(ctx.params.category, categoryData);
