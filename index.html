@@ -17,20 +17,26 @@
 <body>
   <header class="site-header clearfix">
     <section class="heading-group-h1 pull-left">
-    <h1>The Big Ipsum Blog</h1>
-    <h2>Our intent is for all your delight</h2>
-  </section>
+      <h1>The Big Ipsum Blog</h1>
+      <h2>Our intent is for all your delight</h2>
+
+<div id="social">
+    <a href= "http://twitter.com/erikawh0" target =_blank>Twitter</a></li>
+    <a href= "http://github.com/erikawho" target=_blank>Github</a></li>
+</div>
+    </section>
 
 <nav class = "main-nav">
-  <div class="hamburgler"></div>
     <ul>
       <li class = "ul.nav li" data-content = "About"><a href = "/html/About.html">About</a></li>
       <li class = "ul.nav li" data-content = "Contact"><a href = "/html/Contact.html">Contact</a></li>
-      <li><a href= "http://twitter.com/erikawh0" target =_blank>Twitter</a></li>
-      <li><a href= "http://github.com/erikawho" target=_blank>Github</a></li>
     </ul>
+</nav>
 
-<form>
+  </header>
+
+<section id="filters" class="tab-content active">
+  <div>
   <select id="filterAuthor">
     <option id="authorFilter">Filter by author</option>
   </select>
@@ -43,9 +49,13 @@
   <select id="filterTitle">
   <option id="titleFilter">Filter by title</option>
   </select>
-</form>
-</nav>
-</header>
+
+</div>
+</section>
+
+<section id="articles">
+    <div id="blog"></div>
+</section>
 
       <main>
         <section class="tab-content" id="article">
