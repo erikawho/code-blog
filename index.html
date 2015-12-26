@@ -4,10 +4,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" type="text/css" href="vendor/styles/normalize.css">
-  <link rel="stylesheet" type="text/css" href="css/base.css">
-  <link rel="stylesheet" type="text/css" href="css/layout.css">
-  <link rel="stylesheet" type="text/css" href="css/modules.css">
+  <link rel="stylesheet" type="text/css" href="/vendor/styles/normalize.css">
+  <link rel="stylesheet" type="text/css" href="/css/base.css">
+  <link rel="stylesheet" type="text/css" href="/css/layout.css">
+  <link rel="stylesheet" type="text/css" href="/css/modules.css">
   <link rel="stylesheet" href="http://css-spinners.com/css/spinner/throbber.css" type="text/css">
 <!-- CSS files in order-->
 
@@ -28,6 +28,7 @@
 
 <nav class = "main-nav">
     <ul>
+      <a href="/">Home</a>
       <li class = "ul.nav li" data-content = "About"><a href = "/html/About.html">About</a></li>
       <li class = "ul.nav li" data-content = "Contact"><a href = "/html/Contact.html">Contact</a></li>
     </ul>
@@ -37,16 +38,16 @@
 
 <section id="filters" class="tab-content active">
   <div>
-  <select id="filterAuthor">
+  <select id="author">
     <option id="authorFilter">Filter by author</option>
   </select>
-    <br />
-  <select id="filterCategory">
+
+  <select id="category">
   <option id="categoryFilter">Filter by category</option>
   </select>
-    <br />
+
   </select>
-  <select id="filterTitle">
+  <select id="title">
   <option id="titleFilter">Filter by title</option>
   </select>
 
@@ -58,6 +59,12 @@
 </section>
 
       <main>
+        <section id="about" class="tab-content">
+                 <div>
+                   <p>GitHub Repos</p>
+                 </div>
+        </section>
+
         <section class="tab-content" id="article">
         </section>
         <section class="tab-content" id="about">
@@ -79,9 +86,9 @@ Copyright Big Ipsum 2015.
 
 <!-- // 3rd-party -->
 <script src ="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/page.js/1.6.4/page.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.4/handlebars.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/page.js/1.6.4/page.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.5/marked.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.min.js"></script>
 <script src="/vendor/js/html5sql.js"></script>
@@ -105,7 +112,7 @@ Copyright Big Ipsum 2015.
 
 <!-- Controller -->
 <script src="/js/articleController.js"></script>
-<script src="/js/repoController.js"></script>
+<script src="/js/reposController.js"></script>
 
 <!-- Router -->
 <script src="/js/router.js"></script>
