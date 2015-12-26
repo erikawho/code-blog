@@ -1,10 +1,23 @@
-function Article (opts) {
-  Object.keys(opts).forEach(function(e, index, keys) {
-    this[e] = opts[e];
-  },this);
+// constructor
+var Article = function(props) {
+  this.id = props.id;
+  this.title = props.title;
+  this.author = props.author;
+  this.authorUrl = props.authorUrl;
+  this.category = props.category;
+  this.markdown = props.markdown;
+  this.markedBody = marked(this.markdown);
+  this.publishedOn = props.publishedOn;
+  this.calculateDaysOld();
+};
 
-  this.body = opts.body || marked(this.markdown);
-}
+// date method
+Article.prototype.calculateDaysOld = function() {
+  var currentDate = new Date();
+  var publishedDate = new Date(this.publishedOn);
+  var diffDays = Math.floor((currentDate.getTime() - publishedDate.getTime())/1000/60/60/24);
+  this.daysOld = diffDays;
+};
 
 Article.prototype.insertRecord = function(callback) {
   // insert article record into database
@@ -47,11 +60,12 @@ Article.prototype.deleteRecord = function(callback) {
 
 Article.all = [];
 
+// Populate database from json
 Article.requestAll = function(next, callback) {
-  $.getJSON('js/blogArticles.json', function (articles) {
+  $.getJSON('/js/blogArticles.json', function (articles) {
     console.log(articles + 'Articles from line 52')
-    articles.forEach(function(articleItem) {
-      var article = new Article(articleItem);
+    articles.forEach(function(articleData) {
+      var article = new Article(articleData);
       console.log(article)
       article.insertRecord();
     });
@@ -63,17 +77,17 @@ Article.loadAll = function(callback) {
   var callback = callback || function() {};
 
   if (Article.all.length === 0) {
-    console.log('Article length 0')
+    console.log('Article length 0');
     webDB.execute('SELECT * FROM articles ORDER BY publishedOn;',
       function(rows) {
         if (rows.length === 0) {
-          console.log('Row length 0')
+          console.log('Row length 0');
           // Request data from server, then try loading from db again:
           Article.requestAll(Article.loadAll, callback);
         } else {
           rows.forEach(function(row) {
             Article.all.push(new Article(row));
-            console.log('Created new article')
+            console.log('Created new article');
           });
           callback();
         }
@@ -121,12 +135,13 @@ Article.findByAuthor = function(category, callback) {
         'data': [author]
       }
     ],
-    function(rows) {
-      var articles = rows.map(function(row) {
-        return new Article(row);
-      });
-      callback(articles);
-    }
+      callback
+    // function(rows) {
+    //   var articles = rows.map(function(row) {
+    //     return new Article(row);
+    //   });
+    //   callback(articles);
+    // }
   );
 };
 
@@ -138,12 +153,13 @@ Article.findByTitle = function(category, callback) {
         'data': [title]
       }
     ],
-    function(rows) {
-      var articles = rows.map(function(row) {
-        return new Article(row);
-      });
-      callback(articles);
-    }
+    callback
+    // function(rows) {
+    //   var articles = rows.map(function(row) {
+    //     return new Article(row);
+    //   });
+    //   callback(articles);
+// }
   );
 };
 

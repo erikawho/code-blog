@@ -11,10 +11,10 @@ page('/author/:author',
 );
 
 page('/title/:title',
-    articleController.author,
+    articleController.title,
     articleController.show
 );
 
-page('/html/about', repoController.index);
+page('/about', reposController.index);
 
 page.start();

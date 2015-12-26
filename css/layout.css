@@ -6,7 +6,7 @@
   float: right;
 }
 
-.clearfix::after {
+.clearfix:after {
   content: "";
   display: table;
   clear: both;
@@ -14,6 +14,24 @@
 
 img {
   max-width: 100%;
+  float: left;
+  margin: 10px;
+}
+
+#social {
+  float:right;
+}
+
+.tab-list {
+  display: inline;
+}
+
+.tab-content.hide {
+  display: none;
+}
+
+.tab-content.active {
+  display: block;
 }
 
 .heading-group-h1 {

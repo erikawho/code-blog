@@ -1,0 +1,76 @@
+var blog = {};
+blog.blogArticles = [];
+
+// sort articles by latest first
+blog.sortRawData = function() {
+  blog.rawData.sort(function(a, b) {
+    if (a.publishedOn > b.publishedOn) {
+      return 1;
+    }
+    if (a.publishedOn < b.publishedOn) {
+      return -1;
+    }
+    return 0;
+  });
+};
+
+// create articles
+blog.createArticles = function() {
+  Article.truncateTable();
+  for (var i = 0; i < blog.rawData.length; i++) {
+    var art = new Article(blog.rawData[i]);
+    blog.blogArticles.push(art);
+    art.insertRecord();
+    $('#blog').prepend(art.toHTML());
+    $('pre code').each(function(i, block) {
+      hljs.highlightBlock(block);
+    });
+  };
+};
+
+// read on functionality
+blog.truncateArticles = function() {
+  $('article p:not(:first-child)').hide();
+  $('.read-on').on('click', function(event) {
+    event.preventDefault();
+    $(this).parent().find('p').fadeIn();
+    $(this).hide();
+  });
+};
+
+// author filter
+blog.authorPopulate = function() {
+  for(var i = 0; i < blog.blogArticles.length; i++) {
+    var currentAuthor = blog.blogArticles[i].author;
+    var $popAuthor = $('#authorFilter').clone();
+    $popAuthor.removeAttr('id').text(currentAuthor);
+    $('#author').append($popAuthor);
+  }
+};
+
+// category filter
+blog.categoryPopulate = function() {
+  for (var i = 0; i < blog.blogArticles.length; i++) {
+    var currentCategory = blog.blogArticles[i].category;
+    // $.each($.unique(blog.blogArticles.category), function(i, value) {
+    var $popCategory = $('#categoryFilter').clone();
+    $popCategory.removeAttr('id').text(currentCategory);
+    $('#category').append($popCategory);
+  // });
+  }
+};
+
+// method to handle filter
+blog.handleFilter = function() {
+  $('select[id="category"]').change(function() {
+    $('#author').find('option:first').attr('selected', 'selected');
+    $('#blog').find('article').hide();
+    $('.category:contains(' + $(this).val() + ')').parent().show();
+  });
+
+  $('select[id="author"]').change(function() {
+    $('#category').find('option:first').attr('selected', 'selected');
+    $('#blog').find('article').hide();
+    $('.article:contains(' + $(this).val() + ')').show();
+  });
+};

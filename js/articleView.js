@@ -13,16 +13,16 @@ articleView.loadTemplate = function(articles) {
   });
 };
 
-articleView.renderGroup = function(articlesList) {
-  $('#article') // HTML element 'article' ID in index.html
+articleView.renderGroup = function(articleList) {
+  $('#blog') // HTML element 'articles' ID in index.html
     .hide()
     .empty()
     .append(
-      articlesList.map(function(a) {
+      articleList.map(function(a) {
         return articleView.render(a);
       })
     )
-    // .siblings().hide();
+    .siblings().hide();
 };
 
 articleView.index = function() {
@@ -30,20 +30,22 @@ articleView.index = function() {
 };
 
 articleView.render = function(article) {
-  article.daysAgo =
-    parseInt((new Date() - new Date(article.publishedOn))/60/60/24/1000);
-
-  article.publishStatus = article.publishedOn ? 'published ' + article.daysAgo + ' days ago' : '(draft)';
-  article.authorSlug = util.slug(article.author);
-  article.categorySlug = util.slug(article.category);
-  $('#article').show();
+  $('#articles').show();
   $('#about').hide();
   return articleView.template(article);
 };
 
-articleView.show = function(article) {
-  articleView.loadTemplate(article);
+articleView.show = function(articles) {
+  articleView.loadTemplate(articles);
 };
+
+  // article.daysAgo =
+  //   parseInt((new Date() - new Date(article.publishedOn))/60/60/24/1000);
+  //
+  // article.publishStatus = article.publishedOn ? 'published ' + article.daysAgo + ' days ago' : '(draft)';
+  // article.authorSlug = util.slug(article.author);
+  // article.categorySlug = util.slug(article.category);
+
 
 // Expand/Collapse Article
 articleView.truncateArticle = function() {
@@ -61,7 +63,7 @@ articleView.authorPopulate = function() {
   _.uniq(Article.all, function(article) {
     return article.author;
   }).map(function(article) {
-    var $popAuthor = $('#author-filter').clone();
+    var $popAuthor = $('#authorFilter').clone();
     $popAuthor.removeAttr('id').text(article.author);
     $('#author').append($popAuthor);
   });
@@ -72,7 +74,7 @@ articleView.categoryPopulate = function() {
   _.uniq(Article.all, function(article) {
     return article.category;
   }).map(function(article) {
-    var $popCategory = $('#category-filter').clone();
+    var $popCategory = $('#categoryFilter').clone();
     $popCategory.removeAttr('id').text(article.category);
     $('#category').append($popCategory);
   });
@@ -83,7 +85,7 @@ articleView.titlePopulate = function() {
   _.uniq(Article.all, function(article) {
     return article.title;
   }).map(function(article) {
-    var $popTitle = $('#title-filter').clone();
+    var $popTitle = $('#titleFilter').clone();
     $popTitle.removeAttr('id').text(article.title);
     $('#title').append($popTitle);
   });
@@ -91,15 +93,18 @@ articleView.titlePopulate = function() {
 
 // -------------HANDLE THE FILTERS---------------------
 articleView.handleFilter = function() {
-  $('#category').change(function() {
+  $('#category').on('change', function(e) {
     page('/category/' + $(this).val());
+    e.preventDefault();
   });
 
-  $('#author').change(function() {
+  $('#author').on('change', function(e) {
     page('/author/' + $(this).val());
+    e.preventDefault();
   });
 
-  $('#title').change(function() {
+  $('#title').on('change', function(e) {
     page('/title/' + $(this).val());
+    e.preventDefault();
   });
 };
