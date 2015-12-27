@@ -2,11 +2,11 @@ var blog = {};
 blog.holdArticles = [];
 
 blog.loadArticles = function() {
-  $.get('/template/handlebars.html', function(data, message, xhr) {
+  $.get('/template/handlebars-template.html', function(data, message, xhr) {
     Article.prototype.template = Handlebars.compile(data);
     $.ajax({
       type: 'HEAD',
-      url: '/util/blogArticles.json',
+      url: '/util/articles.json',
       success: blog.checkForNewArticles
     });
   });
@@ -29,7 +29,7 @@ blog.checkForNewArticles = function(data, message, xhr) {
 };
 
 blog.fetchJSON = function() {
-  $.getJSON('/util/blogArticles.json', blog.updateFromJSON);
+  $.getJSON('/util/articles.json', blog.updateFromJSON);
 };
 
 blog.updateFromJSON = function (data) {
@@ -75,9 +75,9 @@ blog.render = function() {
   });
   blog.authorFilter();
   blog.categoryFilter();
-  blog.titleFilter();
   blog.minimizeArticles();
   blog.applyHighlighter();
+  // blog.titleFilter();
 };
 
 blog.sortRawData = function() {

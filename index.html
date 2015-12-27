@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" type="text/css" href="/vendor/styles/normalize.css">
   <link rel="stylesheet" type="text/css" href="/css/base.css">
   <link rel="stylesheet" type="text/css" href="/css/layout.css">
-  <link rel="stylesheet" type="text/css" href="/css/modules.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/modules.css"> -->
   <link rel="stylesheet" type="text/css" href="/css/nav.css">
-  <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="http://css-spinners.com/css/spinner/throbber.css" type="text/css">
 <!-- CSS files in order-->
@@ -17,31 +17,36 @@
 
 <body>
 
-  <header class="site-header clearfix">
+  <header>
     <div class="hamburgTitle">
     <span class="hamburger"><i class="fa fa-2x fa-bars"></i></span>
       <h1>The Big Ipsum Blog</h1>
       <h2>Our intent is for all your delight</h2>
     </div>
 
-<div id="social">
-    <a id="twitter" href= "http://twitter.com/erikawh0" target =_blank>Twitter</a></li>
-    <a id="gitHub" href= "http://github.com/erikawho" target=_blank>Github</a></li>
-</div>
+
+<nav class="navigation">
+        <ul>
+          <li class="tab"><a href="/"><i class="fa fa-home"></i><span>Home</span></a></li>
+          <li class="tab"><a href="/about"><i class="fa fa-book"></i><span>About</span></a></li>
+          <li><a href="https://github.com/erikawho" target=_blank><i class="fa fa-github"></i>GitHub</a></li>
+          <li><a href="http://twitter.com/erikawh0" target =_blank><i class="fa fa-twitter"></i>Twitter</a></li>
+        </ul>
+
 
 <div class="divide-line"></div>
 
 <div class="searchForm">
   <form class="searchArticles">
-    <select class="authorFilter">
-      <option value="none">-- Filter by Author --</option>
+    <select class="artAuth filters">
+      <option value="none">Filter by Author</option>
     </select>
-    <select class="categoryFilter">
-      <option value="none">-- Filter by Category --</option>
+    <select class="artCat filters">
+      <option value="none">Filter by Category</option>
     </select>
-    <select class="titleFilter">
+    <!-- <select class="artTit filters">
       <option value="none">-- Filter by Title --</option>
-    </select>
+    </select> -->
     <noscript><input type="submit" value="Submit"></noscript>
   </form>
 </div>
@@ -56,11 +61,11 @@
 </section>
 
 <section id="about">
-<div class="section-content">
-<h1 class="section-title">GitHub Repos</h1>
-<ul id="repos">
-</ul>
-</div>
+  <div class="section-content">
+    <h1 class="section-title">About Me</h1>
+    <ul id="repos">
+    </ul>
+  </div>
 </section>
 </div>
 
@@ -72,7 +77,7 @@ Copyright Big Ipsum 2015.
 
 <!-- // 3rd-party -->
 <script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
-<script src="/vendor/js/html5sql.js"></script>
+<script type="text/javascript" src="/vendor/js/html5sql.js"></script>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.5/marked.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
@@ -85,9 +90,9 @@ Copyright Big Ipsum 2015.
 <!-- // Mine -->
 <script src="/js/webdb.js"></script>
 <script src="/js/blog-functions.js"></script>
-<script src="/js/blog-init.js"></script>
+<!-- <script src="/js/blog-init.js"></script> -->
 <script src="/js/nav.js"></script>
-<script src="/js/index.js"></script>
+<!-- <script src="/js/index.js"></script> -->
 <!-- <script src="/js/editor.js"></script> -->
 <!-- <script src="/js/stats.js"></script> -->
 
@@ -97,12 +102,12 @@ Copyright Big Ipsum 2015.
 <script src="/js/github.js"></script>
 
 <!-- View -->
-<script src="/js/articlesView.js"></script>
 <script src="/js/aboutView.js"></script>
+<script src="/js/articlesView.js"></script>
 
 <!-- Controller -->
 <script src="/js/articlesController.js"></script>
-<script src="/js/reposController.js"></script>
+<script src="/js/aboutController.js"></script>
 
 <!-- Router -->
 <script src="/js/router.js"></script>

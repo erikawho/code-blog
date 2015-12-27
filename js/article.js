@@ -54,7 +54,7 @@ Article.find = function(id, callback) {
   webDB.execute(
     [
       {
-        'sql': 'SELECT * FROM articles WHERE id = ?',
+        sql: 'SELECT * FROM articles WHERE id = ?',
         'data': [id]
       }
     ]
@@ -65,7 +65,7 @@ Article.findByAuthor = function(author, callback) {
   webDB.execute(
     [
       {
-        'sql': 'SELECT * FROM articles WHERE author = ?',
+        sql: 'SELECT * FROM articles WHERE author = ?',
         'data': [author]
       }
     ]
@@ -76,23 +76,23 @@ Article.findByCategory = function(category, callback) {
   webDB.execute(
     [
       {
-        'sql': 'SELECT * FROM articles WHERE category = ?',
+        sql: 'SELECT * FROM articles WHERE category = ?',
         'data': [category]
       }
     ]
   , callback);
 };
-
-Article.findByTitle = function(title, callback) {
-  webDB.execute(
-    [
-      {
-        'sql': 'SELECT * FROM articles WHERE title = ?',
-        'data': [title]
-      }
-    ]
-  , callback);
-};
+// 
+// Article.findByTitle = function(title, callback) {
+//   webDB.execute(
+//     [
+//       {
+//         sql: 'SELECT * FROM articles WHERE title = ?',
+//         'data': [title]
+//       }
+//     ]
+//   , callback);
+// };
 
 Article.insert = function(ele) {
   webDB.execute(
