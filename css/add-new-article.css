@@ -1,0 +1,47 @@
+.section-title {
+  padding-left: 1rem;
+}
+
+.read-on {
+  display: none;
+}
+
+.section-title {
+  text-align: center;
+  padding: 0;
+}
+
+#add-new-article {
+  padding: 2em 2em 0.5em;
+}
+
+#add-new-article label,
+#article-export label {
+  display: block;
+  padding-bottom: 0.25em;
+}
+
+#add-new-article input,
+#article-body {
+  display: block;
+  margin: 0.25rem 0 1rem;
+}
+
+#article-published {
+  display: block;
+}
+
+#export-button {
+  margin: 1rem 2rem 0.5rem;
+}
+
+#export-field {
+  padding-left: 2rem;
+}
+
+#article-export input {
+  display: block;
+  width: 95%;
+  color: gray;
+  margin: 0 auto;
+}

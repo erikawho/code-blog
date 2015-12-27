@@ -4,71 +4,74 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href='https://fonts.googleapis.com/css?family=Lato' rel='stylesheet' type='text/css'>
-  <link rel="stylesheet" type="text/css" href="vendor/styles/normalize.css">
-  <link rel="stylesheet" type="text/css" href="css/base.css">
-  <link rel="stylesheet" type="text/css" href="css/layout.css">
-  <link rel="stylesheet" type="text/css" href="css/modules.css">
+  <link rel="stylesheet" type="text/css" href="/vendor/styles/normalize.css">
+  <link rel="stylesheet" type="text/css" href="/css/base.css">
+  <link rel="stylesheet" type="text/css" href="/css/layout.css">
+  <!-- <link rel="stylesheet" type="text/css" href="/css/modules.css"> -->
+  <link rel="stylesheet" type="text/css" href="/css/nav.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="http://css-spinners.com/css/spinner/throbber.css" type="text/css">
 <!-- CSS files in order-->
 
 </head>
 
-<!-- // Template -->
-<script id="blogArticle" type="text/x-handlebars-template">
-  <article id="post">
-    <h1 class = "postTitle">{{title}}</h1>
-    By <a href="{{authorURL}}"><p class = "postAuthor">{{author}}</a></p>
-    <p class = "postCategory">{{category}}</p>
-    <section class = "postBody">{{{body}}}</section>
-    <p class = "postAge">{{publishedOn}}</p>
-    <a href = "#" class = "read-on">Expand/Collapse</a>
-  </article>
-</script>
-
-
 <body>
-  <header class="site-header clearfix">
-    <section class="heading-group-h1 pull-left">
-    <h1>The Big Ipsum Blog</h1>
-    <h2>Our intent is for all your delight</h2>
-  </section>
 
-<nav class = "main-nav">
-  <div class="hamburgler"></div>
-    <ul>
-      <li class = "ul.nav li" data-content = "About"><a href = "/html/About.html">About</a></li>
-      <li class = "ul.nav li" data-content = "Contact"><a href = "/html/Contact.html">Contact</a></li>
-      <li><a href= "http://twitter.com/Erika_Hokanson" target =_blank>Twitter</a></li>
-      <li><a href= "http://github.com/erikawho" target=_blank>Github</a></li>
-    </ul>
-  </nav>
+  <header>
+    <div class="hamburgTitle">
+    <span class="hamburger"><i class="fa fa-2x fa-bars"></i></span>
+      <h1>The Big Ipsum Blog</h1>
+      <h2>Our intent is for all your delight</h2>
+    </div>
+
+
+<nav class="navigation">
+        <ul>
+          <li class="tab"><a href="/"><i class="fa fa-home"></i><span>Home</span></a></li>
+          <li class="tab"><a href="/about"><i class="fa fa-book"></i><span>About</span></a></li>
+          <li><a href="https://github.com/erikawho" target=_blank><i class="fa fa-github"></i>GitHub</a></li>
+          <li><a href="http://twitter.com/erikawh0" target =_blank><i class="fa fa-twitter"></i>Twitter</a></li>
+        </ul>
+
+
+<div class="divide-line"></div>
+
+<div class="searchForm">
+  <form class="searchArticles">
+    <select class="articleAuthor filters">
+      <option value="none">Filter by Author</option>
+    </select>
+    <select class="articleCategory filters">
+      <option value="none">Filter by Category</option>
+    </select>
+    <select class="articleTitle filters">
+      <option value="none">Filter by Title</option>
+    </select>
+    <noscript><input type="submit" value="Submit"></noscript>
+  </form>
+</div>
+</nav>
 </header>
 
-<main>
-  <section id="articles" class="tab-content">
-    <h3>Filter Articles</h3>
-    <form id = "categoryFilter">
-    <select id = "category">
-        <option class = "categoryMenuItem" value = "none">Choose category</option>
-    </select>
-    </form>
-    <form id = "authorFilter">
-    <select id = "author">
-        <option class = "authorMenuItem" value = "none">Choose author</option>
-    </select>
-    </form>
-    <form id = "titleFilter">
-    <select id = "title">
-        <option class = "titleMenuItem" value = "none">Choose title</option>
-    </select>
-    </form>
-  </div>
+
+<div class="mainBody">
+<section id="articles" class="section-active">
+  <main>
+  </main>
 </section>
 
-  <div id="app">
+<section id="about">
+  <div class="section-content">
+    <h1 class="section-title">About Me</h1>
+    <ul id="repos">
+    </ul>
   </div>
+</section>
+</div>
 
-</main>
+
+<!-- // DISCUS COMMENTING TOOL -->
+<div id="disqus_thread" class="non-default"></div>
 
 <footer>
 Copyright Big Ipsum 2015.
@@ -77,36 +80,42 @@ Copyright Big Ipsum 2015.
 <!-- // LIBRARIES GALORE! -->
 
 <!-- // 3rd-party -->
-<script src ="https://code.jquery.com/jquery-1.11.3.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.4/handlebars.js"></script>
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+<script type="text/javascript" src="/vendor/js/html5sql.js"></script>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.0.5/handlebars.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/0.3.5/marked.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.0.0/highlight.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/page.js/1.6.4/page.min.js"></script>
-<script src="/vendor/js/html5sql.js"></script>
-<script src="/vendor/js/marked.js"></script>
+<script>hljs.initHighlightingOnLoad();</script>
+<script type="text/javascript" src="/vendor/js/page.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.10.1/lodash.js"></script>
 
-<!-- // My library -->
+<!-- // Mine -->
 <script src="/js/webdb.js"></script>
-<script src="/js/utilities.js"></script>
-<script src="/js/index.js"></script>
-<script src="/js/editor.js"></script>
-<script src="/js/stats.js"></script>
+<script src="/js/blog-functions.js"></script>
+<script src="/js/nav.js"></script>
+<!-- <script src="/js/editor.js"></script> -->
+<!-- <script src="/js/stats.js"></script> -->
+
+<!-- DISCUS -->
+<script type="text/javascript" src="/js/disqusConfig.js"></script>
+  <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+<script id="dsq-count-scr" src="//bigipsumblog.disqus.com/count.js" async></script>
 
 <!-- // APP CODE -->
 <!-- Model -->
 <script src="/js/article.js"></script>
-<script src="/js/blog.js"></script>
-<script src="/js/repo.js"></script>
+<script src="/js/github.js"></script>
 
 <!-- View -->
-<script src="/js/articleView.js"></script>
 <script src="/js/aboutView.js"></script>
+<script src="/js/articlesView.js"></script>
 
 <!-- Controller -->
-<script src="/js/articleController.js"></script>
-<script src="/js/repoController.js"></script>
+<script src="/js/articlesController.js"></script>
+<script src="/js/aboutController.js"></script>
 
 <!-- Router -->
 <script src="/js/router.js"></script>
 
-</body>
+ </body>
 </html>

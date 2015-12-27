@@ -1,26 +1,84 @@
-.pull-left {
-  float: left;
+/***************** Section 1 *************/
+
+article h1 {
+  font-size: 3rem;
+  color: #808080;
 }
 
-.pull-right {
-  float: right;
+article h2 {
+  font-size: 2.4rem;
+  color: black;
 }
 
-.clearfix::after {
-  content: "";
-  display: table;
+.articlePost a {
+  font-size: 2rem;
+}
+
+.expand, .collapse {
+  text-decoration: none;
+}
+
+section {
+  display: none;
   clear: both;
 }
 
-img {
-  max-width: 100%;
+section.section-active {
+  display: block;
 }
 
-.heading-group-h1 {
-  max-width: 80%;
+main {
+  margin: 0 auto;
+  width: 100%;
 }
 
-#filters select {
-  width: 90%;
-  margin: .2em 5%;
+.section-content {
+  font-size: 1.8rem;
+  padding: 2.5rem;
+  background-color: #FBFBFB;
+  margin: 1rem 1rem 2.5rem;
+  border: solid #D8D8D8 1px;
+}
+
+.title {
+  text-decoration: none;
+}
+
+img:first-child {
+  clear: left;
+  width: 300px;
+  float: left;
+  margin: 1rem 1rem 1rem 0;
+}
+
+img:nth-child(2) {
+  width: 300px;
+  float: right;
+  margin: 1rem 0 1rem 1rem;
+}
+
+/***************** Footer *************/
+
+footer {
+  padding: 1.5rem;
+  background-color: #F29507;
+  color: #black;
+}
+
+/***************** Media Queries *************/
+
+@media (min-width: 600px) {
+  .section-content {
+    font-size: 1.8rem;
+  }
+
+  article h1 {
+    font-size: 3.2rem;
+    color: black;
+  }
+
+  article h2 {
+    font-size: 2.5rem;
+    color: black;
+  }
 }

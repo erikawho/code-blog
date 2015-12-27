@@ -37,11 +37,12 @@ webDB.connect = function (database, title, size) {
 };
 
 webDB.setupTables = function () {
-  webDB.execute(
-    [
-      'CREATE TABLE IF NOT EXISTS articles (id INTEGER PRIMARY KEY, title VARCHAR(255) NOT NULL, author VARCHAR(255) NOT NULL, authorUrl VARCHAR (255), category VARCHAR(20), publishedOn DATETIME, markdown TEXT NOT NULL);',
-      'CREATE TABLE IF NOT EXISTS authors (id INTEGER PRIMARY KEY, name VARCHAR(255) NOT NULL, url VARCHAR(255));'
-    ]
+  html5sql.process(
+  'CREATE TABLE IF NOT EXISTS articles (id INTEGER PRIMARY KEY, title VARCHAR(255) NOT NULL, author VARCHAR(255) NOT NULL, authorUrl VARCHAR (255), category VARCHAR(20), publishedOn DATETIME, markdown TEXT NOT NULL);',
+   function() {
+     // on success
+     console.log('Success setting up tables.');
+   }
   );
 };
 
