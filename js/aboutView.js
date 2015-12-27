@@ -1,20 +1,25 @@
 var aboutView = {};
 
 aboutView.index = function() {
-  $('#aboutContent').empty();
-  $('#articles').hide();
-  $('#aboutContent').show();
+  aboutView.ui();
 
-  var _append = function(repo) {
-    $('#aboutContent').append(aboutView.render(repo));
+  var _append = function(data) {
+    $('#repos').append(aboutView.render(data));
   };
-  repos.all.forEach(_append);
+
+  github.all.forEach(_append);
 };
 
 aboutView.render = function(repo) {
-  return $('<li>').text(repo.name);
+  return '<li>' + repo.full_name + '</li>';
 };
 
 aboutView.ui = function() {
+  var $about = $('#about');
+  var $ul = $about.find('ul');
 
+  $ul.empty();
+  $about.fadeIn().siblings().hide();
+  blog.resetFilters();
+  pageFunctions.closeNav();
 };

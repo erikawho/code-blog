@@ -1,18 +1,26 @@
-page('/', articleController.index);
+page('/',
+    articlesController.loadDB,
+    articlesController.getTemplate,
+    articlesController.index,
+    articlesController.show
+);
 
 page('/category/:category',
-    articleController.category,
-    articleController.show
+    articlesController.getTemplate,
+    articlesController.category,
+    articlesController.show
 );
 
 page('/author/:author',
-    articleController.author,
-    articleController.show
+    articlesController.getTemplate,
+    articlesController.author,
+    articlesController.show
 );
 
 page('/title/:title',
-    articleController.title,
-    articleController.show
+    articlesController.getTemplate,
+    articlesController.title,
+    articlesController.show
 );
 
 page('/about', reposController.index);
