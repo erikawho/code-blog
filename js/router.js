@@ -14,11 +14,11 @@ page('/author/:author',
     articlesController.author,
     articlesController.show
 );
-// page('/title/:title',
-//     articlesController.getTemplate,
-//     articlesController.title,
-//     articlesController.show
-// );
+page('/title/:title',
+    articlesController.getTemplate,
+    articlesController.title,
+    articlesController.show
+);
 page('/about', aboutController.index);
 
 page.start();

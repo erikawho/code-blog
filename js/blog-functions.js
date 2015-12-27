@@ -26,18 +26,18 @@ blog.categoryFromDB = function() {
   );
 };
 
-// blog.titleFromDB = function() {
-//   $('.artTit').children('option:nth-child(n+2)').remove();
-//   webDB.execute(
-//     'SELECT DISTINCT title FROM articles ORDER BY title'
-//     , function(resultArray) {
-//       blog.uniqueTitles = resultArray;
-//       resultArray.forEach(function(ele) {
-//         $('.artTit').append('<option>' + ele.title + '</option>');
-//       });
-//     }
-//   );
-// };
+blog.titleFromDB = function() {
+  $('.artTit').children('option:nth-child(n+2)').remove();
+  webDB.execute(
+    'SELECT DISTINCT title FROM articles ORDER BY title'
+    , function(resultArray) {
+      blog.uniqueTitles = resultArray;
+      resultArray.forEach(function(ele) {
+        $('.artTit').append('<option>' + ele.title + '</option>');
+      });
+    }
+  );
+};
 
 blog.authorSelect = function() {
   $('.artAuth').on('change', function() {
@@ -51,16 +51,16 @@ blog.categorySelect = function() {
   });
 };
 
-// blog.titleSelect = function() {
-//   $('.artTit').on('change', function() {
-//     page('/title/' + $(this).val());
-//   });
-// };
+blog.titleSelect = function() {
+  $('.artTit').on('change', function() {
+    page('/title/' + $(this).val());
+  });
+};
 
 blog.resetFilters = function() {
   $('.artAuth').find('option:first').attr('selected', 'selected');
   $('.artCat').find('option:first').attr('selected', 'selected');
-  // $('.artTit').find('option:first').attr('selected', 'selected');
+  $('.artTit').find('option:first').attr('selected', 'selected');
 };
 
 blog.minimizeArticles = function() {
@@ -116,8 +116,8 @@ blog.viewFunctions = function() {
   blog.minimizeArticles();
   blog.authorFromDB();
   blog.categoryFromDB();
-  // blog.titleFromDB();
+  blog.titleFromDB();
   blog.authorSelect();
   blog.categorySelect();
-  // blog.titleSelect();
+  blog.titleSelect();
 };

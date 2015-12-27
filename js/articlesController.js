@@ -57,17 +57,17 @@ articlesController.author = function(ctx, next) {
   Article.findByAuthor(ctx.params.author, authorData);
 };
 
-// articlesController.title = function(ctx, next) {
-//   var titleData = function(data) {
-//     console.log('in articlesController.title');
-//     console.log(data);
-//     ctx.articles = data.map(function(ele, index, array) {
-//       return new Article(ele);
-//     });
-//     next();
-//   };
-//   Article.findByTitle(ctx.params.title, titleData);
-// };
+articlesController.title = function(ctx, next) {
+  var titleData = function(data) {
+    console.log('in articlesController.title');
+    console.log(data);
+    ctx.articles = data.map(function(ele, index, array) {
+      return new Article(ele);
+    });
+    next();
+  };
+  Article.findByTitle(ctx.params.title, titleData);
+};
 
 articlesController.show = function(ctx, next) {
   console.log('in articlesController.show');

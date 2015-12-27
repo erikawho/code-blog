@@ -82,17 +82,17 @@ Article.findByCategory = function(category, callback) {
     ]
   , callback);
 };
-// 
-// Article.findByTitle = function(title, callback) {
-//   webDB.execute(
-//     [
-//       {
-//         sql: 'SELECT * FROM articles WHERE title = ?',
-//         'data': [title]
-//       }
-//     ]
-//   , callback);
-// };
+
+Article.findByTitle = function(title, callback) {
+  webDB.execute(
+    [
+      {
+        sql: 'SELECT * FROM articles WHERE title = ?',
+        'data': [title]
+      }
+    ]
+  , callback);
+};
 
 Article.insert = function(ele) {
   webDB.execute(

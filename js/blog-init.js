@@ -77,7 +77,7 @@ blog.render = function() {
   blog.categoryFilter();
   blog.minimizeArticles();
   blog.applyHighlighter();
-  // blog.titleFilter();
+  blog.titleFilter();
 };
 
 blog.sortRawData = function() {
