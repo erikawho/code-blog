@@ -13,12 +13,12 @@ body {
 
 header {
   color: white;
-  background-color: red;
+  background-color: #BF1717;
   padding: 0;
 }
 
 a {
-  color: #716D6D;
+  color: #808080;
 }
 
 /***************** Media Queries *************/

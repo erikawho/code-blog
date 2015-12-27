@@ -17,7 +17,7 @@ header h1 {
 nav.navigation {
   position: absolute;
   display: none;
-  background-color: rgba(0, 0, 0, 0.85);;
+  background-color: #D84F13;
   margin: 0 auto;
   border: solid gray 2px;
   z-index: 100;
@@ -44,11 +44,11 @@ nav.navigation li a {
 }
 
 nav.navigation li a:hover {
-  color: #F51F6A;
+  color: #808080;
 }
 
 nav.navigation li:hover {
-  color: #F51F6A;
+  color: #808080;
 }
 
 li .fa {
