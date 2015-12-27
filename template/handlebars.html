@@ -1,9 +1,10 @@
 <!-- // Template -->
-  <article class="articlePost section-content" data-author="{{author}}" data-category="{{category}}" id="{{id}}">
-    <h1>{{title}}</h1>
-    <section class = "category">Category: {{category}}</section>
-    <address>By <a href="{{authorURL}}">{{author}}</a>published {{daysOld}} days ago</address>
-    <section class = "body">{{{markdown}}}</section>
-    <a href = "#" class = "read-on">Expand/Collapse</a>
-    <!-- <a href="/articles/{{id}}"> -->
-  </article>
+<article class="articlePost section-content" data-author="{{author}}" data-category="{{category}}" id="{{id}}">
+  <a href="" class="title"><h1>{{title}}</h1></a>
+  <h4 class="authorDate">By <a href="{{authorUrl}}">{{author}}</a><br/>Published about {{daysAgo}} days ago.</h4>
+  <div class="bodyText">
+    {{{markdown}}}
+  </div>
+  <a href="#" class="read-on">Read On <i class="fa fa-long-arrow-right"></i></a><a href="#" class="read-less">Read Less <i class="fa fa-level-up"></i></a>
+  <h5 class="category">Category(s): {{category}}</h5>
+</article>
