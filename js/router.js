@@ -21,4 +21,6 @@ page('/title/:title',
 );
 page('/about', aboutController.index);
 
+page('/contact', contactController.index);
+
 page.start();
