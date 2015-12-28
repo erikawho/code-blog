@@ -6,6 +6,7 @@ html {
 body {
   font-size: 1.6rem;
   font-family: "Open Sans", sans-serif;
+  background-image: url("/img/floralwallpaper.jpg");
   background-color: white;
   margin: 0 auto;
   max-width: 1000px;
@@ -20,6 +21,7 @@ header {
 a {
   color: #808080;
 }
+
 
 /***************** Media Queries *************/
 
